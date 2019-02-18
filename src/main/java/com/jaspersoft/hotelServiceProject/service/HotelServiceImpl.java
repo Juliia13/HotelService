@@ -1,9 +1,9 @@
-package com.jaspersoft.service;
+package com.jaspersoft.hotelServiceProject.service;
 
-import com.jaspersoft.model.Guest;
-import com.jaspersoft.model.Hotel;
-import com.jaspersoft.model.Room;
-import com.jaspersoft.repository.HotelRepository;
+import com.jaspersoft.hotelServiceProject.model.Guest;
+import com.jaspersoft.hotelServiceProject.model.Hotel;
+import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotelServiceProject.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +14,12 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Autowired
-    HotelRepository hotelRepository;
+    HotelRepository hotelRepositoryImpl;
 
 
     @Override
     public Hotel findAll() {
-        return hotelRepository.findAll();
+        return hotelRepositoryImpl.findAll();
     }
 
 

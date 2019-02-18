@@ -1,4 +1,4 @@
-package com.jaspersoft.model;
+package com.jaspersoft.hotelServiceProject.model;
 
 import java.util.ArrayList;
 
