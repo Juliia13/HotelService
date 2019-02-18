@@ -64,6 +64,7 @@ public class Main {
             System.out.println("\nfailed to reserve");
         }
 
+
         //cancel reservation
         System.out.println("\nCancel reservation");
         service.cancelReservation(service.showGuests().get(0), "1A");
