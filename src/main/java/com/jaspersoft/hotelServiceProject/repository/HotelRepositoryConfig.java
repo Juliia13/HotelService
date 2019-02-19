@@ -26,7 +26,7 @@ public class HotelRepositoryConfig {
                 "Queen Room",
                 true,
                 null,
-                59.99);
+                119.99);
     }
 
     @Bean

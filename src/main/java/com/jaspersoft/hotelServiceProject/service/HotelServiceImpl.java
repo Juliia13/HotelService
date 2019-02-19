@@ -79,8 +79,9 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public boolean reserveRoomForSpecificUser(Guest quest, String roomNumber) {
+    public boolean reserveRoomForSpecificUser(Guest quest, String roomNumber) throws HotelServiceException {
         for (Room room : findAll().getRooms()) {
+
             if (room.getRoomNumber().equals(roomNumber) && room.isAvailable()) {
                 if (quest.getMoney() >= room.getPrice()) {
                     room.setAvailable(false);
@@ -88,19 +89,23 @@ public class HotelServiceImpl implements HotelService {
                     quest.setMoney(quest.getMoney() - room.getPrice());
 
                     return true;
+                } else {
+                    throw new HotelServiceException("There is not enough money on your account! The room price is " + room.getPrice() + ". There is " + quest.getMoney() + " on your account");
                 }
+
+
             }
 
 
         }
 
+        throw new HotelServiceException("There is no such room available: " + roomNumber);
 
-        return false;
     }
 
 
     @Override
-    public boolean cancelReservation(Guest quest, String roomNumber) {
+    public boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException {
         for (Room room : findAll().getRooms()) {
             if (roomNumber.equals(room.getRoomNumber()) && quest.equals(room.getGuest()) && !room.isAvailable()) {
                 room.setAvailable(true);
@@ -112,7 +117,7 @@ public class HotelServiceImpl implements HotelService {
         }
 
 
-        return false;
+        throw new HotelServiceException("There is no reservations of room" + roomNumber + " for quest " + quest.getName());
     }
 
 

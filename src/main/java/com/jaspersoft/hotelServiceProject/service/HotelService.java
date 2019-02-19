@@ -19,9 +19,9 @@ public interface HotelService {
 
     ArrayList<Room> showRoomsReservedByUser(Guest quest);
 
-    boolean reserveRoomForSpecificUser(Guest quest, String roomNumber);
+    boolean reserveRoomForSpecificUser(Guest quest, String roomNumber) throws HotelServiceException;
 
-    boolean cancelReservation(Guest quest, String roomNumber);
+    boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException;
 
 
 }

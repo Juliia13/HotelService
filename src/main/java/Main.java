@@ -2,6 +2,7 @@ import com.jaspersoft.hotelServiceProject.AppConfig;
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.service.HotelService;
+import com.jaspersoft.hotelServiceProject.service.HotelServiceException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -11,9 +12,9 @@ public class Main {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         HotelService hotelServiceImpl = context.getBean("hotelServiceImpl", HotelService.class);
-//        System.out.println(context.getBeansOfType(Object.class ));
+        //System.out.println(context.getBeansOfType(Object.class ));
 
-        //hotel instance
+        // hotel instance
         System.out.println(hotelServiceImpl.findAll() + " \n");
 
         // show all rooms
@@ -46,30 +47,64 @@ public class Main {
 
 
         //show room reservedByUser
-        System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
-        System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
+        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(0).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
 
 
         //reserveRoom success
-        if (hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(0), "1A")) {
+        try {
+            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(0), "1A");
             System.out.println("\nreservation success");
+
+
+        } catch (HotelServiceException exc) {
+            System.out.println(exc.getMessage());
         }
+
 
         System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
 
+
         //reserveRoom fail
-        if (!hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(2), "2A")) {
-            System.out.println("\nfailed to reserve");
+        try {
+
+            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(2), "2A");
+
+        } catch (HotelServiceException exc) {
+            System.out.println(exc.getMessage());
+        }
+
+        try {
+
+            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(2), "15A");
+
+        } catch (HotelServiceException exc) {
+            System.out.println(exc.getMessage());
         }
 
 
         //cancel reservation
-        System.out.println("\nCancel reservation");
-        hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "1A");
-        System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
-        hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
-        System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
-        System.out.println(hotelServiceImpl.showGuests().get(0));
+        System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+
+        try {
+            hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
+            System.out.println("cancelled");
+        } catch (HotelServiceException exc) {
+            System.out.println(exc.getMessage());
+        }
+
+
+        System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+        try {
+            hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
+            System.out.println("cancelled");
+        } catch (HotelServiceException exc) {
+            System.out.println(exc.getMessage());
+        }
+
+
+
+
 
 
     }
