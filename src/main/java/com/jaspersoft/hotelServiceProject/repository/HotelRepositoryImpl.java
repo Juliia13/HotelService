@@ -12,36 +12,30 @@ import java.util.ArrayList;
 @Repository("hotelRepositoryImpl")
 public class HotelRepositoryImpl implements HotelRepository {
 
-    ApplicationContext context = new AnnotationConfigApplicationContext(HotelRepositoryConfig.class);
+    private ApplicationContext context = new AnnotationConfigApplicationContext(HotelRepositoryConfig.class);
 
 
     private Hotel moonstone42;
 
     public HotelRepositoryImpl() {
-        init();
+        this.moonstone42 = new Hotel(showRooms(), showGuests());
 
-    }
-
-    @Override
-    public void init() {
-        ArrayList<Room> rooms = new ArrayList<>();
-        ArrayList<Guest> quests = new ArrayList<>();
-
-        context.getBeansOfType(Room.class).forEach((name, object) -> {
-            rooms.add(object);
-
-        });
-        context.getBeansOfType(Guest.class).forEach((name, object) -> {
-            quests.add(object);
-
-        });
-        moonstone42 = new Hotel(rooms, quests);
     }
 
     //get hotel instance
     @Override
     public Hotel findAll() {
         return moonstone42;
+    }
+
+    @Override
+    public ArrayList<Guest> showGuests() {
+        return new ArrayList<>(context.getBeansOfType(Guest.class).values());
+    }
+
+    @Override
+    public ArrayList<Room> showRooms() {
+        return new ArrayList<>(context.getBeansOfType(Room.class).values());
     }
 
 
