@@ -1,4 +1,5 @@
-import com.jaspersoft.hotelServiceProject.AppConfig;
+package com.jaspersoft.hotelServiceProject;
+
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.service.HotelService;
@@ -8,11 +9,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Main {
 
+
     public static void main(String[] args) {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         HotelService hotelServiceImpl = context.getBean("hotelServiceImpl", HotelService.class);
-        //System.out.println(context.getBeansOfType(Object.class ));
+        System.out.println(context.getBeansOfType(Room.class));
 
         // hotel instance
         System.out.println(hotelServiceImpl.findAll() + " \n");
