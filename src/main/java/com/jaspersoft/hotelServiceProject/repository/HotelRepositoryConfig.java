@@ -1,14 +1,10 @@
 package com.jaspersoft.hotelServiceProject.repository;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
-import com.jaspersoft.hotelServiceProject.model.Hotel;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-
-@Configuration
+//@Configuration we don't need this in this case, because we specified file when create context
 public class HotelRepositoryConfig {
 
     @Bean
@@ -66,29 +62,6 @@ public class HotelRepositoryConfig {
                 29.55);
     }
 
-    @Bean
-    public ArrayList<Room> getRooms() {
-        ArrayList<Room> rooms = new ArrayList<>();
-        rooms.add(getRoom1());
-        rooms.add(getRoom2());
-        rooms.add(getRoom3());
-        rooms.add(getRoom4());
-        return rooms;
-    }
-
-    @Bean
-    public ArrayList<Guest> getGuests() {
-        ArrayList<Guest> quests = new ArrayList<>();
-        quests.add(getBob());
-        quests.add(getTom());
-        quests.add(getMarry());
-        return quests;
-    }
-
-    @Bean
-    public Hotel moonstone42() {
-        return new Hotel(getRooms(), getGuests());
-    }
 
 
 
