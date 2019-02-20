@@ -14,10 +14,11 @@ public class Main {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         HotelService hotelServiceImpl = context.getBean("hotelServiceImpl", HotelService.class);
-        System.out.println(context.getBeansOfType(Room.class));
+
 
         // hotel instance
         System.out.println(hotelServiceImpl.findAll() + " \n");
+
 
         // show all rooms
         System.out.println("All rooms: ");

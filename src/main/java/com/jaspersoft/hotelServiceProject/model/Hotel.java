@@ -1,13 +1,14 @@
 package com.jaspersoft.hotelServiceProject.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hotel {
 
-    private ArrayList<Room> rooms;
-    private ArrayList<Guest> quests;
+    private List<Room> rooms;
+    private List<Guest> quests;
 
-    public ArrayList<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
@@ -15,7 +16,7 @@ public class Hotel {
         this.rooms = rooms;
     }
 
-    public ArrayList<Guest> getGuests() {
+    public List<Guest> getGuests() {
         return quests;
     }
 
@@ -24,7 +25,7 @@ public class Hotel {
     }
 
 
-    public Hotel(ArrayList<Room> rooms, ArrayList<Guest> quests) {
+    public Hotel(List<Room> rooms, List<Guest> quests) {
         this.rooms = rooms;
         this.quests = quests;
     }

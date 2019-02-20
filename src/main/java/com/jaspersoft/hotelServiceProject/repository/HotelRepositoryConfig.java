@@ -3,8 +3,9 @@ package com.jaspersoft.hotelServiceProject.repository;
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-//@Configuration we don't need this in this case, because we specified file when create context
+@Configuration
 public class HotelRepositoryConfig {
 
     @Bean

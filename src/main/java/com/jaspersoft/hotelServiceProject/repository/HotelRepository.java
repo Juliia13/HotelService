@@ -4,12 +4,12 @@ import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Hotel;
 import com.jaspersoft.hotelServiceProject.model.Room;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface HotelRepository {
     Hotel findAll();
 
-    ArrayList<Guest> showGuests();
+    List<Guest> showGuests();
 
-    ArrayList<Room> showRooms();
+    List<Room> showRooms();
 }

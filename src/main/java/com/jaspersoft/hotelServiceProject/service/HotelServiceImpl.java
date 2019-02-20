@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service("hotelServiceImpl")
 public class HotelServiceImpl implements HotelService {
@@ -15,6 +16,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     private HotelRepository hotelRepositoryImpl;
+
 
 
     @Override
@@ -27,14 +29,16 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public ArrayList<Room> showAllRooms() {
+    public List<Room> showAllRooms() {
+        // return findAll().getRooms();
         return hotelRepositoryImpl.showRooms();
 
     }
 
     //added guests
     @Override
-    public ArrayList<Guest> showGuests() {
+    public List<Guest> showGuests() {
+        // return findAll().getGuests();
         return hotelRepositoryImpl.showGuests();
 
     }
