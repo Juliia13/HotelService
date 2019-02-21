@@ -6,14 +6,18 @@ import com.jaspersoft.hotelServiceProject.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Repository
 public class HotelRepositoryImpl implements HotelRepository {
+    private Hotel hotel;
+
+    @Autowired
+    public void setHotel(List<Room> rooms, List<Guest> questList) {
+        this.hotel = new Hotel(rooms, questList);
+    }
 
 
-    private Hotel moonstone42;
 
     @Autowired
     private List<Room> roomList;
@@ -22,26 +26,26 @@ public class HotelRepositoryImpl implements HotelRepository {
     private List<Guest> questList;
 
 
-    @PostConstruct
-    public void initIt() {
-        moonstone42 = new Hotel(roomList, questList);
-    }
+//    @PostConstruct
+//    public void initIt() {
+//        hotel = new Hotel(roomList, questList);
+//    }
 
 
     //get hotel instance
     @Override
     public Hotel findAll() {
-        return this.moonstone42;
+        return this.hotel;
     }
 
     @Override
     public List<Guest> showGuests() {
-        return questList;
+        return this.questList;
     }
 
     @Override
     public List<Room> showRooms() {
-        return roomList;
+        return this.roomList;
     }
 
 

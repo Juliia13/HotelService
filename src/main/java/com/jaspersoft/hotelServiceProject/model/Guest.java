@@ -42,12 +42,12 @@ public class Guest {
         if (this == o) return true;
         if (!(o instanceof Guest)) return false;
         Guest guest = (Guest) o;
-        return /*Double.compare(guest.getMoney(), getMoney()) == 0 &&*/
+        return Double.compare(guest.getMoney(), getMoney()) == 0 &&
                 getName().equals(guest.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName()/*, getMoney()*/);
+        return Objects.hash(getName(), getMoney());
     }
 }

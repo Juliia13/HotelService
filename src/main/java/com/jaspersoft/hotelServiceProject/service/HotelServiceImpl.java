@@ -15,13 +15,13 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Autowired
-    private HotelRepository hotelRepositoryImpl;
+    private HotelRepository hotelRepository;
 
 
 
     @Override
     public Hotel findAll() {
-        return hotelRepositoryImpl.findAll();
+        return hotelRepository.findAll();
     }
 
 
@@ -31,7 +31,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<Room> showAllRooms() {
         // return findAll().getRooms();
-        return hotelRepositoryImpl.showRooms();
+        return hotelRepository.showRooms();
 
     }
 
@@ -39,7 +39,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<Guest> showGuests() {
         // return findAll().getGuests();
-        return hotelRepositoryImpl.showGuests();
+        return hotelRepository.showGuests();
 
     }
 
@@ -48,7 +48,7 @@ public class HotelServiceImpl implements HotelService {
     public ArrayList<Room> showAvailableRooms() {
         ArrayList<Room> availableRooms = new ArrayList<>();
 
-        for (Room room : hotelRepositoryImpl.showRooms()) {
+        for (Room room : hotelRepository.showRooms()) {
             if (room.isAvailable()) {
                 availableRooms.add(room);
             }
@@ -60,7 +60,7 @@ public class HotelServiceImpl implements HotelService {
     public ArrayList<Room> showRoomByType(String type) {
         ArrayList<Room> allRoomsOfType = new ArrayList<>();
 
-        for (Room room : hotelRepositoryImpl.showRooms()) {
+        for (Room room : hotelRepository.showRooms()) {
             if (room.getRoomType().equals(type)) {
                 allRoomsOfType.add(room);
             }
@@ -72,7 +72,7 @@ public class HotelServiceImpl implements HotelService {
     public ArrayList<Room> showRoomsReservedByUser(Guest quest) {
         ArrayList<Room> roomsReservedByUser = new ArrayList<>();
 
-        for (Room room : hotelRepositoryImpl.showRooms()) {
+        for (Room room : hotelRepository.showRooms()) {
             if (quest.equals(room.getGuest())     /*room.getGuest() != null && room.getGuest().equals(quest)*/) {
                 roomsReservedByUser.add(room);
 
@@ -84,7 +84,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public boolean reserveRoomForSpecificUser(Guest quest, String roomNumber) throws HotelServiceException {
-        for (Room room : hotelRepositoryImpl.showRooms()) {
+        for (Room room : hotelRepository.showRooms()) {
 
             if (room.getRoomNumber().equals(roomNumber) && room.isAvailable()) {
                 if (quest.getMoney() >= room.getPrice()) {
@@ -110,7 +110,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException {
-        for (Room room : hotelRepositoryImpl.showRooms()) {
+        for (Room room : hotelRepository.showRooms()) {
             if (roomNumber.equals(room.getRoomNumber()) && quest.equals(room.getGuest()) && !room.isAvailable()) {
                 room.setAvailable(true);
                 room.setGuest(null);
