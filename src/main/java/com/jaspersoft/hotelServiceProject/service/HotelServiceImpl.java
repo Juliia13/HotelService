@@ -2,6 +2,7 @@ package com.jaspersoft.hotelServiceProject.service;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotelServiceProject.model.RoomType;
 import com.jaspersoft.hotelServiceProject.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public ArrayList<Room> showRoomByType(String type) {
+    public ArrayList<Room> showRoomByType(RoomType type) {
         ArrayList<Room> allRoomsOfType = new ArrayList<>();
 
         for (Room room : hotelRepository.getRooms()) {

@@ -2,6 +2,7 @@ package com.jaspersoft.hotelServiceProject.service;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotelServiceProject.model.RoomType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface HotelService {
 
     ArrayList<Room> showAvailableRooms();
 
-    ArrayList<Room> showRoomByType(String type);
+    ArrayList<Room> showRoomByType(RoomType type);
 
     ArrayList<Room> showRoomsReservedByUser(Guest quest);
 

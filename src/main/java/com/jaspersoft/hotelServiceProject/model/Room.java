@@ -5,12 +5,12 @@ import java.util.Objects;
 public class Room {
 
     private String roomNumber;
-    private String roomType;
+    private RoomType roomType;
     private boolean available;
     private Guest guest;
     private double price;
 
-    public Room(String roomNumber, String roomType, boolean available, Guest guest, double price) {
+    public Room(String roomNumber, RoomType roomType, boolean available, Guest guest, double price) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.available = available;
@@ -26,11 +26,11 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public String getRoomType() {
+    public RoomType getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(String roomType) {
+    public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
 

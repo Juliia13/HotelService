@@ -2,6 +2,7 @@ package com.jaspersoft.hotelServiceProject;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotelServiceProject.model.RoomType;
 import com.jaspersoft.hotelServiceProject.service.HotelService;
 import com.jaspersoft.hotelServiceProject.service.HotelServiceException;
 import org.springframework.context.ApplicationContext;
@@ -40,8 +41,8 @@ public class Main {
 
 
         //show room of type
-        System.out.println("Room of type King Room : " + hotelServiceImpl.showRoomByType("King Room"));
-        System.out.println("Room of type Not Existing : " + hotelServiceImpl.showRoomByType("Not Existing"));
+        System.out.println("Room of type King Room : " + hotelServiceImpl.showRoomByType(RoomType.KING_ROOM));
+        System.out.println("Room of type Not Existing : " + hotelServiceImpl.showRoomByType(null));
         System.out.println("\n");
 
 
