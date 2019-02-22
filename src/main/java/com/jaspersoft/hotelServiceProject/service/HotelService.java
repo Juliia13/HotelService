@@ -1,14 +1,13 @@
 package com.jaspersoft.hotelServiceProject.service;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
-import com.jaspersoft.hotelServiceProject.model.Hotel;
 import com.jaspersoft.hotelServiceProject.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface HotelService {
-    Hotel findAll();
+
 
     List<Room> showAllRooms();
 

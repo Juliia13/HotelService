@@ -16,10 +16,6 @@ public class Main {
         HotelService hotelServiceImpl = context.getBean("hotelServiceImpl", HotelService.class);
 
 
-        // hotel instance
-        System.out.println(hotelServiceImpl.findAll() + " \n");
-
-
         // show all rooms
         System.out.println("All rooms: ");
         for (Room room : hotelServiceImpl.showAllRooms()) {
@@ -104,11 +100,6 @@ public class Main {
         } catch (HotelServiceException exc) {
             System.out.println(exc.getMessage());
         }
-
-
-
-
-
 
     }
 }
