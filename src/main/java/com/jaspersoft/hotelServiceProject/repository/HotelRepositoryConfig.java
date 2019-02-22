@@ -2,6 +2,7 @@ package com.jaspersoft.hotelServiceProject.repository;
 
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotelServiceProject.model.RoomType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ public class HotelRepositoryConfig {
     @Qualifier("moonstone42")
     public Room getRoom1() {
         return new Room("1A",
-                "King Room",
+                RoomType.KING_ROOM,
                 true,
                 null,
                 29.99);
@@ -23,7 +24,7 @@ public class HotelRepositoryConfig {
     @Qualifier("moonstone42")
     public Room getRoom2() {
         return new Room("2A",
-                "Queen Room",
+                RoomType.DOUBLE_FULL_ROOM,
                 true,
                 null,
                 119.99);
@@ -33,7 +34,7 @@ public class HotelRepositoryConfig {
     @Qualifier("moonstone42")
     public Room getRoom3() {
         return new Room("3A",
-                "Double Queen Room",
+                RoomType.QUEEN_ROOM,
                 false,
                 getBob(),
                 19.99);
@@ -43,7 +44,7 @@ public class HotelRepositoryConfig {
     @Qualifier("moonstone42")
     public Room getRoom4() {
         return new Room("4A",
-                "Double Full Room",
+                RoomType.DOUBLE_QUEEN_ROOM,
                 false,
                 getMarry(),
                 19.99);
