@@ -28,7 +28,7 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
         return new Object[][]{
                 {RoomType.KING_ROOM, Arrays.asList(
                         //or better to use getBean()?
-                        //or create local variables and awtowire them?
+                        //or create local variables and use them?
                         new Room("1A",
                                 RoomType.KING_ROOM,
                                 true,
@@ -145,11 +145,19 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(rooms, hotelService.showRoomsReservedByUser(guest));
     }
 
+
     @Test
-    public void testReserveRoomForSpecificUser() {
+    public void testReserveRoom() {
     }
+
+    @Test
+    public void testReserveRoom1() {
+    }
+
 
     @Test
     public void testCancelReservation() {
     }
 }
+
+
