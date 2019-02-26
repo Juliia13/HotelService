@@ -3,8 +3,8 @@ package com.jaspersoft.hotelServiceProject;
 import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
-import com.jaspersoft.hotelServiceProject.service.HotelService;
 import com.jaspersoft.hotelServiceProject.service.HotelServiceException;
+import com.jaspersoft.hotelServiceProject.service.HotelServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,7 +14,38 @@ public class Main {
     public static void main(String[] args) {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        HotelService hotelServiceImpl = context.getBean("hotelServiceImpl", HotelService.class);
+        HotelServiceImpl hotelServiceImpl = context.getBean("hotelServiceImpl", HotelServiceImpl.class);
+
+
+        System.out.println("-----------------------------------------");
+
+
+        System.out.println("when no enough money on account");
+        try {
+            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(4), RoomType.KING_ROOM));
+        } catch (HotelServiceException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        System.out.println("when okay");
+        try {
+            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+            System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
+        } catch (HotelServiceException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("when no available");
+        try {
+            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+            System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
+        } catch (HotelServiceException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        System.out.println("-----------------------------------------");
 
 
         // show all rooms
@@ -53,7 +84,7 @@ public class Main {
 
         //reserveRoom success
         try {
-            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(0), "1A");
+            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), "1A");
             System.out.println("\nreservation success");
 
 
@@ -68,7 +99,7 @@ public class Main {
         //reserveRoom fail
         try {
 
-            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(2), "2A");
+            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(2), "2A");
 
         } catch (HotelServiceException exc) {
             System.out.println(exc.getMessage());
@@ -76,7 +107,7 @@ public class Main {
 
         try {
 
-            hotelServiceImpl.reserveRoomForSpecificUser(hotelServiceImpl.showGuests().get(2), "15A");
+            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(2), "15A");
 
         } catch (HotelServiceException exc) {
             System.out.println(exc.getMessage());
