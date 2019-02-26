@@ -147,17 +147,19 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
 
 
     @Test
-    public void testReserveRoom() {
+    public void testReserveRoomByNumber() {
     }
 
     @Test
-    public void testReserveRoom1() {
+    public void testReserveRoomByType() {
     }
 
 
     @Test
     public void testCancelReservation() {
     }
+
+
 }
 
 

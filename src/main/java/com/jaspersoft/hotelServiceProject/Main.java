@@ -22,7 +22,7 @@ public class Main {
 
         System.out.println("when no enough money on account");
         try {
-            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(4), RoomType.KING_ROOM));
+            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(4), RoomType.KING_ROOM));
         } catch (HotelServiceException e) {
             System.out.println(e.getMessage());
         }
@@ -30,7 +30,7 @@ public class Main {
 
         System.out.println("when okay");
         try {
-            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
             System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
         } catch (HotelServiceException e) {
             System.out.println(e.getMessage());
@@ -38,7 +38,7 @@ public class Main {
 
         System.out.println("when no available");
         try {
-            System.out.println(hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
             System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
         } catch (HotelServiceException e) {
             System.out.println(e.getMessage());
@@ -82,9 +82,9 @@ public class Main {
         System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
 
 
-        //reserveRoom success
+        //reserveRoomByType success
         try {
-            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(0), "1A");
+            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(0), "1A");
             System.out.println("\nreservation success");
 
 
@@ -96,10 +96,10 @@ public class Main {
         System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
 
 
-        //reserveRoom fail
+        //reserveRoomByType fail
         try {
 
-            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(2), "2A");
+            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(2), "2A");
 
         } catch (HotelServiceException exc) {
             System.out.println(exc.getMessage());
@@ -107,7 +107,7 @@ public class Main {
 
         try {
 
-            hotelServiceImpl.reserveRoom(hotelServiceImpl.showGuests().get(2), "15A");
+            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(2), "15A");
 
         } catch (HotelServiceException exc) {
             System.out.println(exc.getMessage());

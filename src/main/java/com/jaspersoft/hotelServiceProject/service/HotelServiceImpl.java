@@ -73,7 +73,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public boolean reserveRoom(Guest quest, String roomNumber) throws HotelServiceException {
+    public boolean reserveRoomByNumber(Guest quest, String roomNumber) throws HotelServiceException {
         for (Room room : hotelRepository.getRooms()) {
 
             if (room.getRoomNumber().equals(roomNumber) && room.isAvailable()) {
@@ -99,7 +99,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public boolean reserveRoom(Guest quest, RoomType roomType) throws HotelServiceException {
+    public boolean reserveRoomByType(Guest quest, RoomType roomType) throws HotelServiceException {
         Room room = getAvailableRoomByType(roomType);
         if (quest.getMoney() >= room.getPrice()) {
             room.setAvailable(false);
