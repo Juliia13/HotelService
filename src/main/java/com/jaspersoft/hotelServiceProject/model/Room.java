@@ -63,12 +63,15 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Room)) return false;
+
         Room room = (Room) o;
-        return isAvailable() == room.isAvailable() &&
-                Double.compare(room.getPrice(), getPrice()) == 0 &&
-                getRoomNumber().equals(room.getRoomNumber()) &&
-                getRoomType().equals(room.getRoomType()) &&
-                getGuest().equals(room.getGuest());
+
+        if (isAvailable() != room.isAvailable()) return false;
+        if (Double.compare(room.getPrice(), getPrice()) != 0) return false;
+        if (getRoomNumber() != null ? !getRoomNumber().equals(room.getRoomNumber()) : room.getRoomNumber() != null)
+            return false;
+        if (getRoomType() != room.getRoomType()) return false;
+        return getGuest() != null ? getGuest().equals(room.getGuest()) : room.getGuest() == null;
     }
 
     @Override
