@@ -140,8 +140,8 @@ public class HotelRepositoryConfig {
     public Room getRoom9() {
         return new Room("4C",
                 RoomType.DOUBLE_QUEEN_ROOM,
-                true,
-                null,
+                false,
+                getTom(),
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
 

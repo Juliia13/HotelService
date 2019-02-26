@@ -5,6 +5,7 @@ import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
@@ -82,8 +83,9 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
                                 (Double) applicationContext.getBean("getDOUBLE_QUEEN_ROOM_PRICE")),
                         new Room("4C",
                                 RoomType.DOUBLE_QUEEN_ROOM,
-                                true,
-                                null,
+                                false,
+                                new Guest("Tom",
+                                        29.55),
                                 (Double) applicationContext.getBean("getDOUBLE_QUEEN_ROOM_PRICE"))
                 )}
 
@@ -128,8 +130,8 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
                 new Room("1AB", RoomType.KING_ROOM, true, null, (Double) applicationContext.getBean("getKING_ROOM_PRICE")),
                 new Room("3A", RoomType.DOUBLE_FULL_ROOM, true, null, (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE")),
                 new Room("3C", RoomType.DOUBLE_FULL_ROOM, true, null, (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE")),
-                new Room("4A", RoomType.QUEEN_ROOM, true, null, (Double) applicationContext.getBean("getQUEEN_ROOM_PRICE")),
-                new Room("4C", RoomType.DOUBLE_QUEEN_ROOM, true, null, (Double) applicationContext.getBean("getDOUBLE_QUEEN_ROOM_PRICE"))
+                new Room("4A", RoomType.QUEEN_ROOM, true, null, (Double) applicationContext.getBean("getQUEEN_ROOM_PRICE"))
+
         ), hotelService.showAvailableRooms());
 
 
@@ -146,9 +148,42 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test
-    public void testReserveRoomByNumber() {
+    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no such room available: 2A")
+    public void testReserveRoomByNumber() throws HotelServiceException {
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "2A");
     }
+
+    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is not enough money on your account! The room price is 10.0. There is 5.55 on your account")
+    public void testReserveRoomByNumber2() throws HotelServiceException {
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get(4), "1AB");
+    }
+
+
+    @Test(description = "Verify true value is returned when reservation by room number successful")
+    @DirtiesContext
+    public void testReserveRoomByNumber3() throws HotelServiceException {
+        Assert.assertTrue(hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "4A"));
+
+    }
+
+    @Test(description = "Verify user money after successful reservation by room number")
+    @DirtiesContext
+    public void testReserveRoomByNumber4() throws HotelServiceException {
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "4A");
+        Assert.assertEquals(379.0, hotelService.showGuests().get(0).getMoney());
+    }
+
+
+    //is it okay to use getBean in test method? or it's better to create one more hotelService method
+    @Test(description = "Verify room status changes when reservation by room number is successful")
+    @DirtiesContext
+    public void testReserveRoomByNumber5() throws HotelServiceException {
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get(2), "1AB");
+        Room room = (Room) applicationContext.getBean("getRoom3");
+        Assert.assertFalse(room.isAvailable());
+    }
+
+
 
     @Test
     public void testReserveRoomByType() {
