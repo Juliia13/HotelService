@@ -14,8 +14,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 
 @ContextConfiguration(classes = AppConfig.class)
@@ -27,78 +26,10 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     @DataProvider
     Object[][] roomsByTypes() {
         return new Object[][]{
-                {RoomType.KING_ROOM, Arrays.asList(
-                        //or better to use getBean()?
-                        //or create local variables and use them?
-                        new Room("1A",
-                                RoomType.KING_ROOM,
-                                true,
-                                null,
-                                (Double) applicationContext.getBean("getKING_ROOM_PRICE")),
-                        new Room("2A",
-                                RoomType.KING_ROOM,
-                                false,
-                                new Guest("Anna",
-                                        59.55),
-                                (Double) applicationContext.getBean("getKING_ROOM_PRICE")),
-                        new Room("1AB",
-                                RoomType.KING_ROOM,
-                                true,
-                                null,
-                                (Double) applicationContext.getBean("getKING_ROOM_PRICE"))
-                )},
-                {RoomType.DOUBLE_FULL_ROOM, Arrays.asList(
-                        new Room("3A",
-                                RoomType.DOUBLE_FULL_ROOM,
-                                true,
-                                null,
-                                (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE")),
-                        new Room("3C",
-                                RoomType.DOUBLE_FULL_ROOM,
-                                true,
-                                null,
-                                (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE"))
-
-
-                )},
-                {RoomType.QUEEN_ROOM, Arrays.asList(
-                        new Room("3AB",
-                                RoomType.QUEEN_ROOM,
-                                false,
-                                new Guest("Bob",
-                                        489.55),
-                                (Double) applicationContext.getBean("getQUEEN_ROOM_PRICE")),
-                        new Room("4A",
-                                RoomType.QUEEN_ROOM,
-                                true,
-                                null,
-                                (Double) applicationContext.getBean("getQUEEN_ROOM_PRICE"))
-                )},
-                {RoomType.DOUBLE_QUEEN_ROOM, Arrays.asList(
-                        new Room("4B",
-                                RoomType.DOUBLE_QUEEN_ROOM,
-                                false,
-                                new Guest("Marry",
-                                        89.55),
-                                (Double) applicationContext.getBean("getDOUBLE_QUEEN_ROOM_PRICE")),
-                        new Room("4C",
-                                RoomType.DOUBLE_QUEEN_ROOM,
-                                false,
-                                new Guest("Tom",
-                                        29.55),
-                                (Double) applicationContext.getBean("getDOUBLE_QUEEN_ROOM_PRICE"))
-                )}
-
-        };
-    }
-
-    @DataProvider
-    Object[][] roomsByUser() {
-        return new Object[][]{
-                {(Guest) applicationContext.getBean("getBob"), Arrays.asList(
-                        (Room) applicationContext.getBean("getRoom6")
-                )},
-                {(Guest) applicationContext.getBean("getAdam"), Arrays.asList()}
+                {RoomType.KING_ROOM},
+                {RoomType.DOUBLE_FULL_ROOM},
+                {RoomType.QUEEN_ROOM},
+                {RoomType.DOUBLE_QUEEN_ROOM}
 
         };
     }
@@ -114,37 +45,45 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify user can get all rooms that are predefined as java spring beans")
     public void testShowAllRooms() {
-        Assert.assertEquals(9, hotelService.showAllRooms().size());
+        Assert.assertEquals(hotelService.showAllRooms().size(), 10);
 
     }
 
     @Test(description = "Verify user can get all quests that are predefined as java spring beans")
     public void testShowGuests() {
-        Assert.assertEquals(5, hotelService.showGuests().size());
+        Assert.assertEquals(hotelService.showGuests().size(), 5);
     }
 
     @Test(description = "Verify user can get all available rooms")
     public void testShowAvailableRooms() {
-        Assert.assertEquals(Arrays.asList(
-                new Room("1A", RoomType.KING_ROOM, true, null, (Double) applicationContext.getBean("getKING_ROOM_PRICE")),
-                new Room("1AB", RoomType.KING_ROOM, true, null, (Double) applicationContext.getBean("getKING_ROOM_PRICE")),
-                new Room("3A", RoomType.DOUBLE_FULL_ROOM, true, null, (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE")),
-                new Room("3C", RoomType.DOUBLE_FULL_ROOM, true, null, (Double) applicationContext.getBean("getDOUBLE_FULL_ROOM_PRICE")),
-                new Room("4A", RoomType.QUEEN_ROOM, true, null, (Double) applicationContext.getBean("getQUEEN_ROOM_PRICE"))
 
-        ), hotelService.showAvailableRooms());
-
-
+        for (Room room : hotelService.showAvailableRooms()) {
+            Assert.assertTrue(room.isAvailable());
+        }
     }
+
 
     @Test(description = "Verify user can get all rooms by type", dataProvider = "roomsByTypes")
-    public void testShowRoomByType(RoomType roomType, List<Room> rooms) {
-        Assert.assertEquals(rooms, hotelService.showRoomByType(roomType));
+    public void testShowRoomByType(RoomType roomType) {
+        for (Room room : hotelService.showRoomByType(roomType)) {
+            Assert.assertEquals(room.getRoomType(), roomType);
+        }
     }
 
-    @Test(dataProvider = "roomsByUser")
-    public void testShowRoomsReservedByUser(Guest guest, List<Room> rooms) {
-        Assert.assertEquals(rooms, hotelService.showRoomsReservedByUser(guest));
+
+    @Test(description = "Verify service can return rooms reserved by specific user")
+    public void testShowRoomsReservedByUser() throws HotelServiceException {
+        Guest guest = new Guest("Tom", 29.55);
+        ArrayList<Room> rooms = hotelService.showRoomsReservedByUser(guest);
+        for (Room room : rooms) {
+            Assert.assertEquals(room.getGuest(), guest);
+
+        }
+    }
+
+    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no reservations for quest Test", description = "Verify exception when there is no reservations for user")
+    public void testShowRoomsReservedByUser2() throws HotelServiceException {
+        hotelService.showRoomsReservedByUser(new Guest("Test", 789.55));
     }
 
 
@@ -170,7 +109,7 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     @DirtiesContext
     public void testReserveRoomByNumber4() throws HotelServiceException {
         hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "4A");
-        Assert.assertEquals(379.0, hotelService.showGuests().get(0).getMoney());
+        Assert.assertEquals(hotelService.showGuests().get(0).getMoney(), 379.0);
     }
 
 
@@ -182,7 +121,6 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
         Room room = (Room) applicationContext.getBean("getRoom3");
         Assert.assertFalse(room.isAvailable());
     }
-
 
 
     @Test

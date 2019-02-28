@@ -18,7 +18,7 @@ public interface HotelService {
 
     ArrayList<Room> showRoomByType(RoomType type);
 
-    ArrayList<Room> showRoomsReservedByUser(Guest quest);
+    ArrayList<Room> showRoomsReservedByUser(Guest quest) throws HotelServiceException;
 
     boolean reserveRoomByNumber(Guest quest, String roomNumber) throws HotelServiceException;
 

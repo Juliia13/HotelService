@@ -77,9 +77,9 @@ public class Main {
         System.out.println("\n");
 
 
-        //show room reservedByUser
-        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(0).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
-        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
+//        //show room reservedByUser
+//        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(0).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+//        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
 
 
         //reserveRoomByType success
@@ -93,7 +93,7 @@ public class Main {
         }
 
 
-        System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+        //  System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
 
 
         //reserveRoomByType fail
@@ -115,7 +115,7 @@ public class Main {
 
 
         //cancel reservation
-        System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+        //  System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
 
         try {
             hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
@@ -125,7 +125,7 @@ public class Main {
         }
 
 
-        System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+        // System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
         try {
             hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
             System.out.println("cancelled");

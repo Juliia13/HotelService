@@ -59,17 +59,22 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public ArrayList<Room> showRoomsReservedByUser(Guest quest) {
+    public ArrayList<Room> showRoomsReservedByUser(Guest quest) throws HotelServiceException {
         ArrayList<Room> roomsReservedByUser = new ArrayList<>();
-
         for (Room room : hotelRepository.getRooms()) {
-            if (quest.equals(room.getGuest())     /*room.getGuest() != null && room.getGuest().equals(quest)*/) {
+            if (quest.equals(room.getGuest())) {
                 roomsReservedByUser.add(room);
-
             }
-
         }
-        return roomsReservedByUser;
+
+
+        if (roomsReservedByUser.isEmpty()) {
+            throw new HotelServiceException("There is no reservations for quest " + quest.getName());
+        } else {
+            return roomsReservedByUser;
+        }
+
+
     }
 
     @Override
