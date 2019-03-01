@@ -145,6 +145,8 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
        Verify service return rooms that reserved by specific user --> +exc caseS
        Verify service returns rooms that are in specified price boundaries
 
+       Verify service return quest by name
+
        ?maybe overload
        Verify service return all available rooms
        Verify service returns all available rooms of specific type
