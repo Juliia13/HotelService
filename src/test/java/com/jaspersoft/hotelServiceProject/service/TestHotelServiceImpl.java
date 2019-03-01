@@ -133,6 +133,63 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
+    //test search logic
+     /*
+       Verify service return all rooms in the hotel
+       Verify service return all hotel customers
+       Verify service return customers that have reservations
+
+       ?maybe overload
+       Verify service return rooms of specific type
+       Verify service return room by number
+       Verify service return rooms that reserved by specific user --> +exc caseS
+       Verify service returns rooms that are in specified price boundaries
+
+       ?maybe overload
+       Verify service return all available rooms
+       Verify service returns all available rooms of specific type
+       Verify service returns all available rooms of specific type and in specified price boundaries (2 cases from this)
+
+       ?Verify service checks room availability by room number
+
+       Verify each room has a room number
+       ?Verify each room has a price, type
+       Verify each roomNumber is unique
+       Verify each customer has a name
+       Verify each name is unique
+
+
+      //reservation logic
+        //when successful (soft assert)
+       Verify service can make a reservation for specific quest (returns true)
+       Verify correct amount of money are substracted from quest when reservation is successful
+       Verify room status is changed when room is reserved
+       Verify room contains link to quest after successful reservation
+
+        //when fail
+       Verify validation when user don't have enough money for reservation
+       Verify validation when specified room is not available for reservation
+
+       //cancel reserve logic
+        Verify service can cancel reservation for specific quest (returns true)
+        Verify money are added to user account after reservation cancelled
+        Verify room status after cancel reservation
+        Verify room quest field is null when cancel reservation
+        Verify validation when user didn't reserve specified room
+        Verify money are not added to user account when cancel operation is not success
+
+
+       Verify message when room not found (for all search service tests)
+
+
+      */
+
+
+
+
+
+
+
 }
 
 
