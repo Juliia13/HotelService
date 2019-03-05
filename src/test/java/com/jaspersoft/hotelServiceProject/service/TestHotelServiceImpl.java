@@ -87,29 +87,29 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no such room available: 2A")
+    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no such room available: 1B")
     public void testReserveRoomByNumber() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "2A");
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "1B");
     }
 
     @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is not enough money on your account! The room price is 10.0. There is 5.55 on your account")
     public void testReserveRoomByNumber2() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get(4), "1AB");
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Adam Miller"), "1C");
     }
 
 
     @Test(description = "Verify true value is returned when reservation by room number successful")
     @DirtiesContext
     public void testReserveRoomByNumber3() throws HotelServiceException {
-        Assert.assertTrue(hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "4A"));
+        Assert.assertTrue(hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "3B"));
 
     }
 
     @Test(description = "Verify user money after successful reservation by room number")
     @DirtiesContext
     public void testReserveRoomByNumber4() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get(0), "4A");
-        Assert.assertEquals(hotelService.showGuests().get(0).getMoney(), 379.0);
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "3B");
+        Assert.assertEquals(hotelService.showGuests().get("Bob Smith").getMoney(), 379.0);
     }
 
 
@@ -117,8 +117,8 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify room status changes when reservation by room number is successful")
     @DirtiesContext
     public void testReserveRoomByNumber5() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get(2), "1AB");
-        Room room = (Room) applicationContext.getBean("getRoom3");
+        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Tom Brown"), "1C");
+        Room room = (Room) applicationContext.getBean("1C");
         Assert.assertFalse(room.isAvailable());
     }
 

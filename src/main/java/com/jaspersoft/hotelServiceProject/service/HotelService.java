@@ -5,14 +5,14 @@ import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public interface HotelService {
 
 
-    List<Room> showAllRooms();
+    Map<String, Room> showAllRooms();
 
-    List<Guest> showGuests();
+    Map<String, Guest> showGuests();
 
     ArrayList<Room> showAvailableRooms();
 
