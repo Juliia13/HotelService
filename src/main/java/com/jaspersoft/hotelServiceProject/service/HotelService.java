@@ -6,6 +6,7 @@ import com.jaspersoft.hotelServiceProject.model.RoomType;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public interface HotelService {
 
@@ -14,11 +15,27 @@ public interface HotelService {
 
     Map<String, Guest> showGuests();
 
+    Set<Guest> showGuestsWithReservations() throws HotelServiceException;
+
+    Room showRoomByNumber(String roomNumber) throws HotelServiceException;
+
+    Set<Room> showRooms(RoomType type) throws HotelServiceException;
+
+    Set<Room> showRooms(Guest quest) throws HotelServiceException;
+
+    Set<Room> showRooms(double fromPrice, double toPrice) throws HotelServiceException;
+
+    Guest showGuest(String name) throws HotelServiceException;
+
+
+
+
+
+
     ArrayList<Room> showAvailableRooms();
 
-    ArrayList<Room> showRoomByType(RoomType type);
 
-    ArrayList<Room> showRoomsReservedByUser(Guest quest) throws HotelServiceException;
+    //  ArrayList<Room> showRoomsReservedByUser(Guest quest) throws HotelServiceException;
 
     boolean reserveRoomByNumber(Guest quest, String roomNumber) throws HotelServiceException;
 

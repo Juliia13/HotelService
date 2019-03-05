@@ -5,6 +5,8 @@ import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -13,13 +15,30 @@ import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
 
 
 @ContextConfiguration(classes = AppConfig.class)
+@PropertySource("prices.properties")
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
+
+    @Value("${KING_ROOM}")
+    private double KING_ROOM_PRICE;
+
+    @Value("${QUEEN_ROOM}")
+    private double QUEEN_ROOM_PRICE;
+
+    @Value("${DOUBLE_QUEEN_ROOM}")
+    private double DOUBLE_QUEEN_ROOM_PRICE;
+
+    @Value("${DOUBLE_FULL_ROOM}")
+    private double DOUBLE_FULL_ROOM_PRICE;
+
     @Autowired
     private HotelService hotelService;
 
@@ -34,6 +53,15 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
         };
     }
 
+    @DataProvider
+    Object[][] priceBoundaries() {
+        return new Object[][]{
+                {0, 158.75},
+                {KING_ROOM_PRICE, QUEEN_ROOM_PRICE}
+
+        };
+    }
+
 
     @BeforeClass
     public void beforeClassMethod() {
@@ -43,16 +71,170 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(description = "Verify user can get all rooms that are predefined as java spring beans")
+    @Test(description = "Verify service returns all rooms in the hotel")
     public void testShowAllRooms() {
         Assert.assertEquals(hotelService.showAllRooms().size(), 10);
 
     }
 
-    @Test(description = "Verify user can get all quests that are predefined as java spring beans")
+    @Test(description = "Verify service returns all hotel quests")
     public void testShowGuests() {
         Assert.assertEquals(hotelService.showGuests().size(), 5);
     }
+
+    @Test(description = "Verify service returns quests that have reservations")
+    public void testShowGuestsWithReservations() throws HotelServiceException {
+        SoftAssert softAssert = new SoftAssert();
+
+        HashSet<String> guests = new HashSet<>();
+        Collections.addAll(guests, "Bob Smith", "Marry Johnson", "Tom Brown", "Anna Davis");
+
+        softAssert.assertEquals(hotelService.showGuestsWithReservations().size(), 4, "The number of guests is wrong");
+        for (Guest guest : hotelService.showGuestsWithReservations()) {
+            softAssert.assertTrue(guests.contains(guest.getName()), "The expected set doesn't contain quest with name " + guest.getName());
+        }
+
+        softAssert.assertAll();
+
+    }
+
+
+    @Test(description = "Verify message when there is no reservations in the hotel",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "There is no reservations in this hotel")
+    @DirtiesContext
+    public void testShowGuestsWithReservations2() throws HotelServiceException {
+        // we need to cancel all reservations before this verification
+        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
+            if (!entry.getValue().isAvailable()) {
+                hotelService.cancelReservation(entry.getValue().getGuest(), entry.getValue().getRoomNumber());
+            }
+
+        }
+
+        hotelService.showGuestsWithReservations();
+
+    }
+
+
+    @Test(description = "Verify service return room by number")
+    public void testShowRoomByNumber() throws HotelServiceException {
+        Assert.assertEquals(hotelService.showRoomByNumber("1C").getRoomNumber(), "1C");
+    }
+
+
+    @Test(description = "Verify message when room with specified number doesn't exist",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "The room with number 'test' doesn't exist")
+    public void testShowRoomByNumber2() throws HotelServiceException {
+        hotelService.showRoomByNumber("test");
+
+    }
+
+
+    @Test(description = "Verify service returns rooms of specific type", dataProvider = "roomsByTypes")
+    public void testShowRoomByType(RoomType roomType) throws HotelServiceException {
+        for (Room room : hotelService.showRooms(roomType)) {
+            Assert.assertEquals(room.getRoomType(), roomType);
+        }
+    }
+
+    @Test(description = "Verify message when there is no rooms of specific type",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "There is no rooms of type TEST in hotel")
+    public void testShowRoomByType2() throws HotelServiceException {
+        hotelService.showRooms(RoomType.TEST);
+    }
+
+
+    @Test(description = "Verify service returns rooms reserved by specific user")
+    public void testShowRoomsReservedByUser() throws HotelServiceException {
+        Guest guest = hotelService.showGuests().get("Tom Brown");
+
+        for (Room room : hotelService.showRooms(guest)) {
+            Assert.assertEquals(room.getGuest().getName(), "Tom Brown");
+        }
+
+    }
+
+    @Test(description = "Verify exception when there is no reservations for user",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "There is no reservations for quest Adam Miller")
+    public void testShowRoomsReservedByUser2() throws HotelServiceException {
+        hotelService.showRooms(hotelService.showGuests().get("Adam Miller"));
+    }
+
+
+    //what approach to use? current OR verify expected result by rooms numbers?
+    @Test(description = "Verify service return rooms that are in specified price boundaries",
+            dataProvider = "priceBoundaries")
+    public void testShowRoomsByPrice(double test1, double test2) throws HotelServiceException {
+
+        for (Room room : hotelService.showRooms(test1, test2)) {
+            Assert.assertTrue(room.getPrice() >= test1 && room.getPrice() <= test2);
+        }
+
+    }
+
+    @Test(description = "Verify message when there are no rooms in specified price boundaries",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "These is no rooms in specified price boundaries")
+    public void testShowRoomsByPrice2() throws HotelServiceException {
+        hotelService.showRooms(0, 5.5);
+    }
+
+
+    @Test(description = "Verify service return guest by name")
+    public void testShowGuestByName() throws HotelServiceException {
+        Assert.assertEquals(hotelService.showGuest("Marry Johnson").getName(), "Marry Johnson");
+    }
+
+
+    @Test(description = "Verify message when guest with specified name not found",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "The guest with name 'Test' doesn't exist")
+    public void testShowGuestByName2() throws HotelServiceException {
+        hotelService.showGuest("Test");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Test(description = "Verify user can get all available rooms")
     public void testShowAvailableRooms() {
@@ -63,28 +245,9 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(description = "Verify user can get all rooms by type", dataProvider = "roomsByTypes")
-    public void testShowRoomByType(RoomType roomType) {
-        for (Room room : hotelService.showRoomByType(roomType)) {
-            Assert.assertEquals(room.getRoomType(), roomType);
-        }
-    }
 
 
-    @Test(description = "Verify service can return rooms reserved by specific user")
-    public void testShowRoomsReservedByUser() throws HotelServiceException {
-        Guest guest = new Guest("Tom", 29.55);
-        ArrayList<Room> rooms = hotelService.showRoomsReservedByUser(guest);
-        for (Room room : rooms) {
-            Assert.assertEquals(room.getGuest(), guest);
 
-        }
-    }
-
-    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no reservations for quest Test", description = "Verify exception when there is no reservations for user")
-    public void testShowRoomsReservedByUser2() throws HotelServiceException {
-        hotelService.showRoomsReservedByUser(new Guest("Test", 789.55));
-    }
 
 
     @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no such room available: 1B")
@@ -185,11 +348,6 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
 
 
       */
-
-
-
-
-
 
 
 }
