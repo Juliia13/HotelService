@@ -17,15 +17,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 @ContextConfiguration(classes = AppConfig.class)
 @PropertySource("prices.properties")
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
+public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Value("${KING_ROOM}")
     private double KING_ROOM_PRICE;
@@ -73,28 +71,26 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service returns all rooms in the hotel")
     public void testShowAllRooms() {
-        Assert.assertEquals(hotelService.showAllRooms().size(), 10);
+        Assert.assertEquals(hotelService.showAllRooms().size(), 11);
 
     }
 
     @Test(description = "Verify service returns all hotel quests")
     public void testShowGuests() {
-        Assert.assertEquals(hotelService.showGuests().size(), 5);
+        Assert.assertEquals(hotelService.showAllGuests().size(), 5);
     }
 
     @Test(description = "Verify service returns quests that have reservations")
     public void testShowGuestsWithReservations() throws HotelServiceException {
-        SoftAssert softAssert = new SoftAssert();
-
-        HashSet<String> guests = new HashSet<>();
-        Collections.addAll(guests, "Bob Smith", "Marry Johnson", "Tom Brown", "Anna Davis");
-
-        softAssert.assertEquals(hotelService.showGuestsWithReservations().size(), 4, "The number of guests is wrong");
-        for (Guest guest : hotelService.showGuestsWithReservations()) {
-            softAssert.assertTrue(guests.contains(guest.getName()), "The expected set doesn't contain quest with name " + guest.getName());
+        Set<Guest> guests = hotelService.showGuestsWithReservations();
+        Assert.assertTrue(!guests.isEmpty(), "There are no guests with reservations");
+        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
+            if (!entry.getValue().isAvailable()) {
+                guests.remove(entry.getValue().getGuest());
+            }
         }
 
-        softAssert.assertAll();
+        Assert.assertTrue(guests.isEmpty());
 
     }
 
@@ -107,7 +103,7 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
         // we need to cancel all reservations before this verification
         for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
             if (!entry.getValue().isAvailable()) {
-                hotelService.cancelReservation(entry.getValue().getGuest(), entry.getValue().getRoomNumber());
+                hotelService.cancelReservation(entry.getValue().getGuest(), entry.getValue());
             }
 
         }
@@ -149,7 +145,7 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service returns rooms reserved by specific user")
     public void testShowRoomsReservedByUser() throws HotelServiceException {
-        Guest guest = hotelService.showGuests().get("Tom Brown");
+        Guest guest = hotelService.showAllGuests().get("Tom Brown");
 
         for (Room room : hotelService.showRooms(guest)) {
             Assert.assertEquals(room.getGuest().getName(), "Tom Brown");
@@ -161,7 +157,7 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
             expectedExceptions = HotelServiceException.class,
             expectedExceptionsMessageRegExp = "There is no reservations for quest Adam Miller")
     public void testShowRoomsReservedByUser2() throws HotelServiceException {
-        hotelService.showRooms(hotelService.showGuests().get("Adam Miller"));
+        hotelService.showRooms(hotelService.showAllGuests().get("Adam Miller"));
     }
 
 
@@ -199,101 +195,184 @@ public class TestHotelServiceImpl extends AbstractTestNGSpringContextTests {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Test(description = "Verify user can get all available rooms")
-    public void testShowAvailableRooms() {
+    @Test(description = "Verify service returns all available rooms")
+    public void testShowAvailableRooms() throws HotelServiceException {
 
         for (Room room : hotelService.showAvailableRooms()) {
             Assert.assertTrue(room.isAvailable());
         }
     }
 
-
-
-
-
-
-
-    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is no such room available: 1B")
-    public void testReserveRoomByNumber() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "1B");
-    }
-
-    @Test(expectedExceptions = HotelServiceException.class, expectedExceptionsMessageRegExp = "There is not enough money on your account! The room price is 10.0. There is 5.55 on your account")
-    public void testReserveRoomByNumber2() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Adam Miller"), "1C");
-    }
-
-
-    @Test(description = "Verify true value is returned when reservation by room number successful")
+    @Test(description = "Verify message when there is no available rooms returns all available rooms",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "All rooms are reserved!")
     @DirtiesContext
-    public void testReserveRoomByNumber3() throws HotelServiceException {
-        Assert.assertTrue(hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "3B"));
+    public void testShowAvailableRooms2() throws HotelServiceException {
+        //we need to reserve all rooms before verification
+        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
+            if (entry.getValue().isAvailable()) {
+                entry.getValue().setAvailable(false);
+            }
+        }
+
+        hotelService.showAvailableRooms();
+    }
+
+    @Test(description = "Verify service returns all available rooms of specific type",
+            dataProvider = "roomsByTypes")
+    public void testShowAvailableRoomsByType(RoomType roomType) throws HotelServiceException {
+
+        for (Room room : hotelService.showAvailableRooms(roomType)) {
+            Assert.assertTrue(room.isAvailable() && room.getRoomType().equals(roomType));
+        }
 
     }
 
-    @Test(description = "Verify user money after successful reservation by room number")
+    @Test(description = "Verify message when there is no available rooms of specific type",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "There is no available rooms of type: KING_ROOM")
     @DirtiesContext
-    public void testReserveRoomByNumber4() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Bob Smith"), "3B");
-        Assert.assertEquals(hotelService.showGuests().get("Bob Smith").getMoney(), 379.0);
+    public void testShowAvailableRoomsByType2() throws HotelServiceException {
+        // we need to book all rooms of tested type
+        for (Room room : hotelService.showRooms(RoomType.KING_ROOM)) {
+            if (room.isAvailable()) {
+                room.setAvailable(false);
+            }
+        }
+
+        hotelService.showAvailableRooms(RoomType.KING_ROOM);
+
     }
 
 
-    //is it okay to use getBean in test method? or it's better to create one more hotelService method
-    @Test(description = "Verify room status changes when reservation by room number is successful")
+    @Test(description = "Verify service can make a reservation for specific guest")
     @DirtiesContext
-    public void testReserveRoomByNumber5() throws HotelServiceException {
-        hotelService.reserveRoomByNumber(hotelService.showGuests().get("Tom Brown"), "1C");
-        Room room = (Room) applicationContext.getBean("1C");
-        Assert.assertFalse(room.isAvailable());
+    public void testReserveRoom() throws HotelServiceException {
+        Guest guest = hotelService.showAllGuests().get("Bob Smith");
+        Room room = hotelService.showRoomByNumber("1C");
+        double money = guest.getMoney();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(hotelService.reserveRoom(guest, room), "Reservation method didn't return true");
+        softAssert.assertEquals(guest.getMoney(), money - room.getPrice(), "Wrong amount of money on users's account");
+        softAssert.assertFalse(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertEquals(room.getGuest(), guest, "Guest is not set to room");
+        softAssert.assertAll();
     }
 
 
-    @Test
-    public void testReserveRoomByType() {
+    //boundary test
+    @Test(description = "Verify service can make a reservation for specific guest when amount of guest money is the same as room price")
+    @DirtiesContext
+    public void testReserveRoom2() throws HotelServiceException {
+        Guest guest = hotelService.showAllGuests().get("Bob Smith");
+        Room room = hotelService.showRoomByNumber("1C");
+        guest.setMoney(room.getPrice());
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(hotelService.reserveRoom(guest, room), "Reservation method didn't return true");
+        softAssert.assertEquals(guest.getMoney(), 0.0, "Wrong amount of money on users's account");
+        softAssert.assertFalse(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertEquals(room.getGuest(), guest, "Guest is not set to room");
+        softAssert.assertAll();
     }
 
 
-    @Test
-    public void testCancelReservation() {
+    @Test(description = "Verify validation when user don't have enough money for reservation",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "There is not enough money on your account")
+    public void testReserveRoom3() throws HotelServiceException {
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Adam Miller"), hotelService.showRoomByNumber("1C"));
     }
+
+    @Test(description = "Verify validation when specified room is not available for reservation",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "The room is not available")
+    public void testReserveRoom4() throws HotelServiceException {
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Bob Smith"), hotelService.showRoomByNumber("4B"));
+    }
+
+    @Test(description = "Verify service can cancel reservation for specific quest")
+    @DirtiesContext
+    public void cancelReservation() throws HotelServiceException {
+        SoftAssert softAssert = new SoftAssert();
+        Guest guest = hotelService.showAllGuests().get("Tom Brown");
+        Room room = hotelService.showAllRooms().get("4B");
+        double money = guest.getMoney();
+
+        softAssert.assertTrue(hotelService.cancelReservation(guest, room), "Cancel reservation method didn't return true");
+        softAssert.assertEquals(guest.getMoney(), money + DOUBLE_QUEEN_ROOM_PRICE, "Wrong amount of money on users's account");
+        softAssert.assertTrue(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertNull(room.getGuest(), "Room still has link to user after cancelling reservation");
+
+        softAssert.assertAll();
+    }
+
+    @Test(description = "Verify validation when cancel reservation on already available room",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "The room is already available! No reservations for specified room found")
+    public void cancelReservation2() throws HotelServiceException {
+        hotelService.cancelReservation(hotelService.showAllGuests().get("Tom Brown"), hotelService.showAllRooms().get("1C"));
+
+    }
+
+    @Test(description = "Verify validation when cancel reservation by user that didn't book specified room",
+            expectedExceptions = HotelServiceException.class,
+            expectedExceptionsMessageRegExp = "The guest Tom Brown has no reservation for room 1B")
+    public void cancelReservation3() throws HotelServiceException {
+        hotelService.cancelReservation(hotelService.showAllGuests().get("Tom Brown"), hotelService.showAllRooms().get("1B"));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //test search logic

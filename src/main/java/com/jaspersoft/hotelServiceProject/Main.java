@@ -16,13 +16,13 @@ public class Main {
 
         System.out.println("-----------------------------------------");
         HotelRepositoryImpl hotelRepository = context.getBean(HotelRepositoryImpl.class);
-        System.out.println(hotelServiceImpl.showGuests());
+        System.out.println(hotelServiceImpl.showAllGuests());
         System.out.println(hotelServiceImpl.showAllRooms());
 //
 //
 //        System.out.println("when no enough money on account");
 //        try {
-//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(4), RoomType.KING_ROOM));
+//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showAllGuests().get(4), RoomType.KING_ROOM));
 //        } catch (HotelServiceException e) {
 //            System.out.println(e.getMessage());
 //        }
@@ -30,7 +30,7 @@ public class Main {
 //
 //        System.out.println("when okay");
 //        try {
-//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showAllGuests().get(0), RoomType.QUEEN_ROOM));
 //            System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
 //        } catch (HotelServiceException e) {
 //            System.out.println(e.getMessage());
@@ -38,7 +38,7 @@ public class Main {
 //
 //        System.out.println("when no available");
 //        try {
-//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showGuests().get(0), RoomType.QUEEN_ROOM));
+//            System.out.println(hotelServiceImpl.reserveRoomByType(hotelServiceImpl.showAllGuests().get(0), RoomType.QUEEN_ROOM));
 //            System.out.println(hotelServiceImpl.showRoomByType(RoomType.QUEEN_ROOM));
 //        } catch (HotelServiceException e) {
 //            System.out.println(e.getMessage());
@@ -58,7 +58,7 @@ public class Main {
 //
 //        //show all guests
 //        System.out.println("All guests: ");
-//        for (Guest guest : hotelServiceImpl.showGuests()) {
+//        for (Guest guest : hotelServiceImpl.showAllGuests()) {
 //            System.out.println(guest);
 //        }
 //        System.out.println("\n");
@@ -78,13 +78,13 @@ public class Main {
 //
 //
 ////        //show room reservedByUser
-////        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(0).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
-////        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(2)));
+////        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showAllGuests().get(0).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showAllGuests().get(0)));
+////        System.out.println("Rooms reserved by quest " + hotelServiceImpl.showAllGuests().get(2).getName() + ": " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showAllGuests().get(2)));
 //
 //
 //        //reserveRoomByType success
 //        try {
-//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(0), "1A");
+//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showAllGuests().get(0), "1A");
 //            System.out.println("\nreservation success");
 //
 //
@@ -93,13 +93,13 @@ public class Main {
 //        }
 //
 //
-//        //  System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+//        //  System.out.println("Rooms reserved by quest: " + hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showAllGuests().get(0)));
 //
 //
 //        //reserveRoomByType fail
 //        try {
 //
-//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(2), "2A");
+//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showAllGuests().get(2), "2A");
 //
 //        } catch (HotelServiceException exc) {
 //            System.out.println(exc.getMessage());
@@ -107,7 +107,7 @@ public class Main {
 //
 //        try {
 //
-//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showGuests().get(2), "15A");
+//            hotelServiceImpl.reserveRoomByNumber(hotelServiceImpl.showAllGuests().get(2), "15A");
 //
 //        } catch (HotelServiceException exc) {
 //            System.out.println(exc.getMessage());
@@ -115,19 +115,19 @@ public class Main {
 //
 //
 //        //cancel reservation
-//        //  System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+//        //  System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showAllGuests().get(0)));
 //
 //        try {
-//            hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
+//            hotelServiceImpl.cancelReservation(hotelServiceImpl.showAllGuests().get(0), "3A");
 //            System.out.println("cancelled");
 //        } catch (HotelServiceException exc) {
 //            System.out.println(exc.getMessage());
 //        }
 //
 //
-//        // System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showGuests().get(0)));
+//        // System.out.println(hotelServiceImpl.showRoomsReservedByUser(hotelServiceImpl.showAllGuests().get(0)));
 //        try {
-//            hotelServiceImpl.cancelReservation(hotelServiceImpl.showGuests().get(0), "3A");
+//            hotelServiceImpl.cancelReservation(hotelServiceImpl.showAllGuests().get(0), "3A");
 //            System.out.println("cancelled");
 //        } catch (HotelServiceException exc) {
 //            System.out.println(exc.getMessage());

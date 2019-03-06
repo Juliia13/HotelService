@@ -7,7 +7,6 @@ import com.jaspersoft.hotelServiceProject.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +28,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Map<String, Guest> showGuests() {
+    public Map<String, Guest> showAllGuests() {
         return hotelRepository.getGuests();
 
     }
@@ -138,87 +137,79 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public ArrayList<Room> showAvailableRooms() {
-        ArrayList<Room> availableRooms = new ArrayList<>();
+    public Set<Room> showAvailableRooms() throws HotelServiceException {
+        Set<Room> result = new HashSet<>();
 
         for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
             if (entry.getValue().isAvailable()) {
-                availableRooms.add(entry.getValue());
+                result.add(entry.getValue());
             }
         }
 
-        return availableRooms;
-    }
-
-
-
-
-    @Override
-    public boolean reserveRoomByNumber(Guest quest, String roomNumber) throws HotelServiceException {
-
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().getRoomNumber().equals(roomNumber) && entry.getValue().isAvailable()) {
-                if (quest.getMoney() >= entry.getValue().getPrice()) {
-                    entry.getValue().setAvailable(false);
-                    entry.getValue().setGuest(quest);
-                    quest.setMoney(quest.getMoney() - entry.getValue().getPrice());
-
-                    return true;
-                } else {
-                    throw new HotelServiceException("There is not enough money on your account! The room price is " + entry.getValue().getPrice() + ". There is " + quest.getMoney() + " on your account");
-                }
-
-
-            }
-        }
-
-
-
-        throw new HotelServiceException("There is no such room available: " + roomNumber);
-
-    }
-
-
-    @Override
-    public boolean reserveRoomByType(Guest quest, RoomType roomType) throws HotelServiceException {
-        Room room = getAvailableRoomByType(roomType);
-        if (quest.getMoney() >= room.getPrice()) {
-            room.setAvailable(false);
-            room.setGuest(quest);
-            quest.setMoney(quest.getMoney() - room.getPrice());
-            return true;
+        if (result.isEmpty()) {
+            throw new HotelServiceException("All rooms are reserved!");
         } else {
-            throw new HotelServiceException("There is not enough money on your account! The room price is " + room.getPrice() + ". There is " + quest.getMoney() + " on your account");
+            return result;
         }
 
-    }
 
-    private Room getAvailableRoomByType(RoomType type) throws HotelServiceException {
-        for (Room room : showAvailableRooms()) {
-            if (room.getRoomType().equals(type)) {
-                return room;
-            }
-        }
-        throw new HotelServiceException("There is no room of type: " + type + " available");
     }
 
 
     @Override
-    public boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException {
-
+    public Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException {
+        Set<Room> result = new HashSet<>();
         for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (roomNumber.equals(entry.getValue().getRoomNumber()) && quest.equals(entry.getValue().getGuest()) && !entry.getValue().isAvailable()) {
-                entry.getValue().setAvailable(true);
-                entry.getValue().setGuest(null);
-                quest.setMoney(quest.getMoney() + entry.getValue().getPrice());
-
-                return true;
+            if (entry.getValue().isAvailable() && entry.getValue().getRoomType().equals(roomType)) {
+                result.add(entry.getValue());
             }
         }
 
-
-        throw new HotelServiceException("There is no reservations of room" + roomNumber + " for quest " + quest.getName());
+        if (result.isEmpty()) {
+            throw new HotelServiceException("There is no available rooms of type: " + roomType);
+        } else {
+            return result;
+        }
     }
 
+
+    @Override
+    public boolean reserveRoom(Guest guest, Room room) throws HotelServiceException {
+        if (room.isAvailable()) {
+            if (guest.getMoney() >= room.getPrice()) {
+                room.setAvailable(false);
+                room.setGuest(guest);
+                guest.setMoney(guest.getMoney() - room.getPrice());
+                return true;
+            } else {
+                throw new HotelServiceException("There is not enough money on your account");
+            }
+
+        } else {
+            throw new HotelServiceException("The room is not available");
+        }
+
+
+    }
+
+
+    @Override
+    public boolean cancelReservation(Guest guest, Room room) throws HotelServiceException {
+        if (!room.isAvailable()) {
+            if (room.getGuest().equals(guest)) {
+                room.setAvailable(true);
+                room.setGuest(null);
+                guest.setMoney(guest.getMoney() + room.getPrice());
+                return true;
+            } else {
+                throw new HotelServiceException("The guest " + guest.getName() + " has no reservation for room " + room.getRoomNumber());
+            }
+
+        } else {
+            throw new HotelServiceException("The room is already available! No reservations for specified room found");
+        }
+
+
+    }
 
 }

@@ -4,7 +4,6 @@ import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,7 +12,7 @@ public interface HotelService {
 
     Map<String, Room> showAllRooms();
 
-    Map<String, Guest> showGuests();
+    Map<String, Guest> showAllGuests();
 
     Set<Guest> showGuestsWithReservations() throws HotelServiceException;
 
@@ -27,21 +26,14 @@ public interface HotelService {
 
     Guest showGuest(String name) throws HotelServiceException;
 
+    Set<Room> showAvailableRooms() throws HotelServiceException;
+
+    Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException;
 
 
+    boolean reserveRoom(Guest guest, Room room) throws HotelServiceException;
 
-
-
-    ArrayList<Room> showAvailableRooms();
-
-
-    //  ArrayList<Room> showRoomsReservedByUser(Guest quest) throws HotelServiceException;
-
-    boolean reserveRoomByNumber(Guest quest, String roomNumber) throws HotelServiceException;
-
-    boolean reserveRoomByType(Guest quest, RoomType roomType) throws HotelServiceException;
-
-    boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException;
+    boolean cancelReservation(Guest quest, Room room) throws HotelServiceException;
 
 
 }

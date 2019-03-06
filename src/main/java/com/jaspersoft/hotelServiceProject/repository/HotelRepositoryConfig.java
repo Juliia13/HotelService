@@ -128,6 +128,16 @@ public class HotelRepositoryConfig {
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
 
+    @Bean(name = "5A")
+    @Qualifier("moonstone42")
+    public Room getRoom11() {
+        return new Room("5A",
+                RoomType.DOUBLE_QUEEN_ROOM,
+                true,
+                null,
+                DOUBLE_QUEEN_ROOM_PRICE);
+    }
+
 
     @Bean(name = "Bob Smith")
     @Qualifier("moonstone42")

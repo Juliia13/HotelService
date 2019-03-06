@@ -1,0 +1,51 @@
+package com.jaspersoft.hotelServiceProject.model;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class GuestTest {
+    private Guest guest;
+
+    @BeforeMethod
+    public void beforeEachTest() {
+        guest = new Guest("Tom Jameson", 55.89);
+    }
+
+
+    @Test(description = "Verify getter and setter methods for name property")
+    public void testGetSetName() {
+        guest.setName("Jon");
+        Assert.assertEquals(guest.getName(), "Jon");
+    }
+
+
+    @Test(description = "Verify getter and setter methods for money property")
+    public void testGetSetMoney() {
+        guest.setMoney(22.55);
+        Assert.assertEquals(guest.getMoney(), 22.55);
+    }
+
+    @Test
+    public void testToString() {
+        Assert.assertEquals(guest.toString(), "Guest{name='Tom Jameson', money=55.89}");
+
+
+    }
+
+    @Test
+    public void testEquals() {
+        Guest guest1 = new Guest("Tom", 55.89);
+        Guest guest2 = new Guest("Tom", 45.88);
+        Assert.assertEquals(guest2, guest1);
+        Assert.assertNotEquals(guest1, guest);
+    }
+
+    @Test
+    public void testHashCode() {
+        Guest guest1 = new Guest("Tom", 55.89);
+        Guest guest2 = new Guest("Tom", 45.88);
+        Assert.assertEquals(guest1.hashCode(), guest2.hashCode());
+        Assert.assertNotEquals(guest1.hashCode(), guest.hashCode());
+    }
+}
