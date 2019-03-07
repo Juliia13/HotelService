@@ -100,7 +100,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "There is no reservations in this hotel")
     @DirtiesContext
     public void testShowGuestsWithReservations2() throws HotelServiceException {
-        // we need to cancel all reservations before this verification
         for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
             if (!entry.getValue().isAvailable()) {
                 hotelService.cancelReservation(entry.getValue().getGuest(), entry.getValue());
