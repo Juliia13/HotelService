@@ -34,18 +34,27 @@ public class RoomTest {
 
     @Test
     public void testSetGetGuest() {
+        Guest guest = new Guest("Bob", 55.5);
+        room.setGuest(guest);
+        Assert.assertEquals(room.getGuest(), guest);
     }
 
 
     @Test
     public void testSetGetPrice() {
+        room.setPrice(154.78);
+        Assert.assertEquals(room.getPrice(), 154.78);
     }
 
     @Test
     public void testEquals() {
+        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
+        Assert.assertEquals(room, room1);
     }
 
     @Test
     public void testHashCode() {
+        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
+        Assert.assertEquals(room.hashCode(), room1.hashCode());
     }
 }

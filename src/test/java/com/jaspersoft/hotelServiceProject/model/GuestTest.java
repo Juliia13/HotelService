@@ -29,17 +29,15 @@ public class GuestTest {
 
     @Test
     public void testEquals() {
-        Guest guest1 = new Guest("Tom", 55.89);
-        Guest guest2 = new Guest("Tom", 45.88);
-        Assert.assertEquals(guest2, guest1);
-        Assert.assertNotEquals(guest1, guest);
+        Guest guest1 = new Guest("Tom Jameson", 585.89);
+        Assert.assertEquals(guest, guest1);
+
     }
 
     @Test
     public void testHashCode() {
-        Guest guest1 = new Guest("Tom", 55.89);
-        Guest guest2 = new Guest("Tom", 45.88);
-        Assert.assertEquals(guest1.hashCode(), guest2.hashCode());
-        Assert.assertNotEquals(guest1.hashCode(), guest.hashCode());
+        Guest guest1 = new Guest("Tom Jameson", 755.89);
+        Assert.assertEquals(guest1.hashCode(), guest.hashCode());
+
     }
 }
