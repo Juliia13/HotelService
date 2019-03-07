@@ -32,7 +32,7 @@ public class RoomTest {
     }
 
 
-    @Test
+    @Test(description = "Verify getters and setters for room guest")
     public void testSetGetGuest() {
         Guest guest = new Guest("Bob", 55.5);
         room.setGuest(guest);
@@ -40,19 +40,19 @@ public class RoomTest {
     }
 
 
-    @Test
+    @Test(description = "Verify getters and setters for room price")
     public void testSetGetPrice() {
         room.setPrice(154.78);
         Assert.assertEquals(room.getPrice(), 154.78);
     }
 
-    @Test
+    @Test(description = "Verify equals method compares rooms by number")
     public void testEquals() {
         Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
         Assert.assertEquals(room, room1);
     }
 
-    @Test
+    @Test(description = "Verify hashcode method takes into account only room number")
     public void testHashCode() {
         Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
         Assert.assertEquals(room.hashCode(), room1.hashCode());

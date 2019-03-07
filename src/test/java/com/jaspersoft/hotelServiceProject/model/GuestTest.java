@@ -27,14 +27,14 @@ public class GuestTest {
     }
 
 
-    @Test
+    @Test(description = "Verify equals method compares quests by name")
     public void testEquals() {
         Guest guest1 = new Guest("Tom Jameson", 585.89);
         Assert.assertEquals(guest, guest1);
 
     }
 
-    @Test
+    @Test(description = "Verify hashcode method takes into account only guest name")
     public void testHashCode() {
         Guest guest1 = new Guest("Tom Jameson", 755.89);
         Assert.assertEquals(guest1.hashCode(), guest.hashCode());

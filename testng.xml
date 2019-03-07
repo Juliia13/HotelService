@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="HotelServiceTestSuite" verbose="1">
+    <test name="model">
+        <classes>
+            <class name="com.jaspersoft.hotelServiceProject.model.GuestTest"/>
+            <class name="com.jaspersoft.hotelServiceProject.model.RoomTest"/>
+        </classes>
+
+
+    </test>
+
+    <test name="repository">
+        <classes>
+            <class name="com.jaspersoft.hotelServiceProject.repository.HotelRepositoryTest"/>
+
+        </classes>
+
+    </test>
+
+    <test name="service">
+        <classes>
+            <class name="com.jaspersoft.hotelServiceProject.service.HotelServiceTest"/>
+
+        </classes>
+
+    </test>
+
+
+</suite>
