@@ -1,7 +1,5 @@
 package com.jaspersoft.hotelServiceProject.model;
 
-import java.util.Objects;
-
 public class Room {
 
     private String roomNumber;
@@ -63,28 +61,14 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Room)) return false;
+
         Room room = (Room) o;
-        return isAvailable() == room.isAvailable() &&
-                Double.compare(room.getPrice(), getPrice()) == 0 &&
-                getRoomNumber().equals(room.getRoomNumber()) &&
-                getRoomType().equals(room.getRoomType()) &&
-                getGuest().equals(room.getGuest());
+
+        return getRoomNumber().equals(room.getRoomNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRoomNumber(), getRoomType(), isAvailable(), getGuest(), getPrice());
-    }
-
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "roomNumber='" + roomNumber + '\'' +
-                ", roomType='" + roomType + '\'' +
-                ", available=" + available +
-                ", guest=" + guest +
-                ", price=" + price +
-                '}';
+        return getRoomNumber().hashCode();
     }
 }

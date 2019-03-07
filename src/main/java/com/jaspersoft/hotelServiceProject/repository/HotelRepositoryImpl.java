@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Map;
 
 @Repository
 public class HotelRepositoryImpl implements HotelRepository {
@@ -14,20 +14,20 @@ public class HotelRepositoryImpl implements HotelRepository {
 
     @Autowired
     @Qualifier("moonstone42")
-    private List<Room> rooms;
+    private Map<String, Room> rooms;
 
     @Autowired
     @Qualifier("moonstone42")
-    private List<Guest> guests;
+    private Map<String, Guest> guests;
 
 
     @Override
-    public List<Guest> getGuests() {
+    public Map<String, Guest> getGuests() {
         return this.guests;
     }
 
     @Override
-    public List<Room> getRooms() {
+    public Map<String, Room> getRooms() {
         return this.rooms;
     }
 

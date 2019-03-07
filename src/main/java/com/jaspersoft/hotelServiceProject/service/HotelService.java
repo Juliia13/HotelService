@@ -4,25 +4,36 @@ import com.jaspersoft.hotelServiceProject.model.Guest;
 import com.jaspersoft.hotelServiceProject.model.Room;
 import com.jaspersoft.hotelServiceProject.model.RoomType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface HotelService {
 
 
-    List<Room> showAllRooms();
+    Map<String, Room> showAllRooms();
 
-    List<Guest> showGuests();
+    Map<String, Guest> showAllGuests();
 
-    ArrayList<Room> showAvailableRooms();
+    Set<Guest> showGuestsWithReservations() throws HotelServiceException;
 
-    ArrayList<Room> showRoomByType(RoomType type);
+    Room showRoomByNumber(String roomNumber) throws HotelServiceException;
 
-    ArrayList<Room> showRoomsReservedByUser(Guest quest);
+    Set<Room> showRooms(RoomType type) throws HotelServiceException;
 
-    boolean reserveRoomForSpecificUser(Guest quest, String roomNumber) throws HotelServiceException;
+    Set<Room> showRooms(Guest quest) throws HotelServiceException;
 
-    boolean cancelReservation(Guest quest, String roomNumber) throws HotelServiceException;
+    Set<Room> showRooms(double fromPrice, double toPrice) throws HotelServiceException;
+
+    Guest showGuest(String name) throws HotelServiceException;
+
+    Set<Room> showAvailableRooms() throws HotelServiceException;
+
+    Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException;
+
+
+    boolean reserveRoom(Guest guest, Room room) throws HotelServiceException;
+
+    boolean cancelReservation(Guest quest, Room room) throws HotelServiceException;
 
 
 }
