@@ -26,12 +26,6 @@ public class GuestTest {
         Assert.assertEquals(guest.getMoney(), 22.55);
     }
 
-    @Test
-    public void testToString() {
-        Assert.assertEquals(guest.toString(), "Guest{name='Tom Jameson', money=55.89}");
-
-
-    }
 
     @Test
     public void testEquals() {

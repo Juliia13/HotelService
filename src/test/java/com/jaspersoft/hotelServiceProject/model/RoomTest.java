@@ -41,11 +41,6 @@ public class RoomTest {
     public void testSetGetPrice() {
     }
 
-
-    @Test
-    public void testToString() {
-    }
-
     @Test
     public void testEquals() {
     }

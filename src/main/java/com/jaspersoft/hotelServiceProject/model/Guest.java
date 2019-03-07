@@ -28,14 +28,6 @@ public class Guest {
 
 
     @Override
-    public String toString() {
-        return "Guest{" +
-                "name='" + name + '\'' +
-                ", money=" + money +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Guest)) return false;

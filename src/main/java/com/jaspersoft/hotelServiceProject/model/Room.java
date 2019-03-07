@@ -57,19 +57,6 @@ public class Room {
     }
 
 
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "roomNumber='" + roomNumber + '\'' +
-                ", roomType='" + roomType + '\'' +
-                ", available=" + available +
-                ", guest=" + guest +
-                ", price=" + price +
-                '}';
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
