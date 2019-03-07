@@ -71,13 +71,13 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service returns all rooms in the hotel")
     public void testShowAllRooms() {
-        Assert.assertEquals(hotelService.showAllRooms().size(), 11);
+        Assert.assertEquals(hotelService.showAllRooms().size(), 11, "Wrong amount of rooms in the hotel");
 
     }
 
     @Test(description = "Verify service returns all hotel quests")
     public void testShowGuests() {
-        Assert.assertEquals(hotelService.showAllGuests().size(), 5);
+        Assert.assertEquals(hotelService.showAllGuests().size(), 5, "Wrong amount of guests in the hotel");
     }
 
     @Test(description = "Verify service returns quests that have reservations")
@@ -115,7 +115,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service return room by number")
     public void testShowRoomByNumber() throws HotelServiceException {
-        Assert.assertEquals(hotelService.showRoomByNumber("1C").getRoomNumber(), "1C");
+        Assert.assertEquals(hotelService.showRoomByNumber("1C").getRoomNumber(), "1C", "Show room by number gives wrong result");
     }
 
 
@@ -131,7 +131,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns rooms of specific type", dataProvider = "roomsByTypes")
     public void testShowRoomByType(RoomType roomType) throws HotelServiceException {
         for (Room room : hotelService.showRooms(roomType)) {
-            Assert.assertEquals(room.getRoomType(), roomType);
+            Assert.assertEquals(room.getRoomType(), roomType, "Show rooms by type gives wrong result");
         }
     }
 
@@ -148,7 +148,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         Guest guest = hotelService.showAllGuests().get("Tom Brown");
 
         for (Room room : hotelService.showRooms(guest)) {
-            Assert.assertEquals(room.getGuest().getName(), "Tom Brown");
+            Assert.assertEquals(room.getGuest().getName(), "Tom Brown", "Show rooms by specific user gives wrong result");
         }
 
     }
@@ -161,13 +161,12 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    //what approach to use? current OR verify expected result by rooms numbers?
     @Test(description = "Verify service return rooms that are in specified price boundaries",
             dataProvider = "priceBoundaries")
     public void testShowRoomsByPrice(double test1, double test2) throws HotelServiceException {
 
         for (Room room : hotelService.showRooms(test1, test2)) {
-            Assert.assertTrue(room.getPrice() >= test1 && room.getPrice() <= test2);
+            Assert.assertTrue(room.getPrice() >= test1 && room.getPrice() <= test2, "Show rooms by price gives wrong result");
         }
 
     }
@@ -208,7 +207,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "All rooms are reserved!")
     @DirtiesContext
     public void testShowAvailableRooms2() throws HotelServiceException {
-        //we need to reserve all rooms before verification
         for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
             if (entry.getValue().isAvailable()) {
                 entry.getValue().setAvailable(false);
@@ -233,7 +231,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "There is no available rooms of type: KING_ROOM")
     @DirtiesContext
     public void testShowAvailableRoomsByType2() throws HotelServiceException {
-        // we need to book all rooms of tested type
         for (Room room : hotelService.showRooms(RoomType.KING_ROOM)) {
             if (room.isAvailable()) {
                 room.setAvailable(false);
@@ -260,7 +257,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    //boundary test
     @Test(description = "Verify service can make a reservation for specific guest when amount of guest money is the same as room price")
     @DirtiesContext
     public void testReserveRoom2() throws HotelServiceException {
@@ -322,111 +318,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         hotelService.cancelReservation(hotelService.showAllGuests().get("Tom Brown"), hotelService.showAllRooms().get("1B"));
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //test search logic
-     /*
-       Verify service return all rooms in the hotel
-       Verify service return all hotel customers
-       Verify service return customers that have reservations
-
-       ?maybe overload
-       Verify service return rooms of specific type
-       Verify service return room by number
-       Verify service return rooms that reserved by specific user --> +exc caseS
-       Verify service returns rooms that are in specified price boundaries
-
-       Verify service return quest by name
-
-       ?maybe overload
-       Verify service return all available rooms
-       Verify service returns all available rooms of specific type
-       Verify service returns all available rooms of specific type and in specified price boundaries (2 cases from this)
-
-       ?Verify service checks room availability by room number
-
-       Verify each room has a room number
-       ?Verify each room has a price, type
-       Verify each roomNumber is unique
-       Verify each customer has a name
-       Verify each name is unique
-
-
-      //reservation logic
-        //when successful (soft assert)
-       Verify service can make a reservation for specific quest (returns true)
-       Verify correct amount of money are substracted from quest when reservation is successful
-       Verify room status is changed when room is reserved
-       Verify room contains link to quest after successful reservation
-
-        //when fail
-       Verify validation when user don't have enough money for reservation
-       Verify validation when specified room is not available for reservation
-
-       //cancel reserve logic
-        Verify service can cancel reservation for specific quest (returns true)
-        Verify money are added to user account after reservation cancelled
-        Verify room status after cancel reservation
-        Verify room quest field is null when cancel reservation
-        Verify validation when user didn't reserve specified room
-        Verify money are not added to user account when cancel operation is not success
-
-
-       Verify message when room not found (for all search service tests)
-
-
-      */
 
 
 }
