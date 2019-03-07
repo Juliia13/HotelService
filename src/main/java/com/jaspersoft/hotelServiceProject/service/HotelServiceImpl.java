@@ -18,9 +18,6 @@ public class HotelServiceImpl implements HotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
-
-    //search logic
-
     @Override
     public Map<String, Room> showAllRooms() {
         return hotelRepository.getRooms();
