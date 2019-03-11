@@ -64,11 +64,11 @@ public class Room {
 
         Room room = (Room) o;
 
-        return getRoomNumber().equals(room.getRoomNumber());
+        return getRoomNumber() != null ? getRoomNumber().equals(room.getRoomNumber()) : room.getRoomNumber() == null;
     }
 
     @Override
     public int hashCode() {
-        return getRoomNumber().hashCode();
+        return getRoomNumber() != null ? getRoomNumber().hashCode() : 0;
     }
 }
