@@ -104,11 +104,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         hotelService.showAllRooms().forEach(
                 (key, value) -> {
                     if (!value.isAvailable()) {
-                        try {
-                            hotelService.cancelReservation(value.getGuest(), value);
-                        } catch (HotelServiceException e) {
-                            e.printStackTrace();
-                        }
+                        value.setGuest(null);
                     }
 
                 }
@@ -288,14 +284,14 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptions = HotelServiceException.class,
             expectedExceptionsMessageRegExp = "There is not enough money on your account")
     public void testReserveRoom3() throws HotelServiceException {
-        hotelService.reserveRoom(hotelService.showAllGuests().get("Adam Miller"), hotelService.showRoomByNumber("1C"));
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Adam Miller"), hotelService.showAllRooms().get("1C"));
     }
 
     @Test(description = "Verify validation when specified room is not available for reservation",
             expectedExceptions = HotelServiceException.class,
             expectedExceptionsMessageRegExp = "The room is not available")
     public void testReserveRoom4() throws HotelServiceException {
-        hotelService.reserveRoom(hotelService.showAllGuests().get("Bob Smith"), hotelService.showRoomByNumber("4B"));
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Bob Smith"), hotelService.showAllRooms().get("4B"));
     }
 
     @Test(description = "Verify service can cancel reservation for specific quest")
