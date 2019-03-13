@@ -17,7 +17,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.util.Map;
 import java.util.Set;
 
 
@@ -54,7 +53,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @DataProvider
     Object[][] priceBoundaries() {
         return new Object[][]{
-                {0, 158.75},
+                {150.55, 530.89},
                 {KING_ROOM_PRICE, QUEEN_ROOM_PRICE}
 
         };
@@ -72,7 +71,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns all rooms in the hotel")
     public void testShowAllRooms() {
         Assert.assertEquals(hotelService.showAllRooms().size(), 11, "Wrong amount of rooms in the hotel");
-
     }
 
     @Test(description = "Verify service returns all hotel quests")
@@ -84,13 +82,16 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     public void testShowGuestsWithReservations() throws HotelServiceException {
         Set<Guest> guests = hotelService.showGuestsWithReservations();
         Assert.assertTrue(!guests.isEmpty(), "There are no guests with reservations");
-        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
-            if (!entry.getValue().isAvailable()) {
-                guests.remove(entry.getValue().getGuest());
-            }
-        }
 
+        hotelService.showAllRooms().forEach(
+                (k, v) -> {
+                    if (!v.isAvailable()) {
+                        guests.remove(v.getGuest());
+                    }
+                }
+        );
         Assert.assertTrue(guests.isEmpty());
+
 
     }
 
@@ -100,12 +101,19 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "There is no reservations in this hotel")
     @DirtiesContext
     public void testShowGuestsWithReservations2() throws HotelServiceException {
-        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
-            if (!entry.getValue().isAvailable()) {
-                hotelService.cancelReservation(entry.getValue().getGuest(), entry.getValue());
-            }
+        hotelService.showAllRooms().forEach(
+                (key, value) -> {
+                    if (!value.isAvailable()) {
+                        try {
+                            hotelService.cancelReservation(value.getGuest(), value);
+                        } catch (HotelServiceException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-        }
+                }
+        );
+
 
         hotelService.showGuestsWithReservations();
 
@@ -129,9 +137,11 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service returns rooms of specific type", dataProvider = "roomsByTypes")
     public void testShowRoomByType(RoomType roomType) throws HotelServiceException {
-        for (Room room : hotelService.showRooms(roomType)) {
-            Assert.assertEquals(room.getRoomType(), roomType, "Show rooms by type gives wrong result");
-        }
+
+        hotelService.showRooms(roomType).forEach(
+                (x -> Assert.assertEquals(x.getRoomType(), roomType, "Show rooms by type gives wrong result"))
+        );
+
     }
 
     @Test(description = "Verify message when there is no rooms of specific type",
@@ -145,10 +155,10 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns rooms reserved by specific user")
     public void testShowRoomsReservedByUser() throws HotelServiceException {
         Guest guest = hotelService.showAllGuests().get("Tom Brown");
+        hotelService.showRooms(guest).forEach(
+                x -> Assert.assertEquals(x.getGuest().getName(), "Tom Brown", "Show rooms by specific user gives wrong result")
+        );
 
-        for (Room room : hotelService.showRooms(guest)) {
-            Assert.assertEquals(room.getGuest().getName(), "Tom Brown", "Show rooms by specific user gives wrong result");
-        }
 
     }
 
@@ -163,11 +173,9 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service return rooms that are in specified price boundaries",
             dataProvider = "priceBoundaries")
     public void testShowRoomsByPrice(double test1, double test2) throws HotelServiceException {
-
-        for (Room room : hotelService.showRooms(test1, test2)) {
-            Assert.assertTrue(room.getPrice() >= test1 && room.getPrice() <= test2, "Show rooms by price gives wrong result");
-        }
-
+        hotelService.showRooms(test1, test2).forEach(
+                x -> Assert.assertTrue(x.getPrice() >= test1 && x.getPrice() <= test2, "Show rooms by price gives wrong result")
+        );
     }
 
     @Test(description = "Verify message when there are no rooms in specified price boundaries",
@@ -195,10 +203,10 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify service returns all available rooms")
     public void testShowAvailableRooms() throws HotelServiceException {
+        hotelService.showAvailableRooms().forEach(
+                x -> Assert.assertTrue(x.isAvailable())
+        );
 
-        for (Room room : hotelService.showAvailableRooms()) {
-            Assert.assertTrue(room.isAvailable());
-        }
     }
 
     @Test(description = "Verify message when there is no available rooms returns all available rooms",
@@ -206,11 +214,11 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "All rooms are reserved!")
     @DirtiesContext
     public void testShowAvailableRooms2() throws HotelServiceException {
-        for (Map.Entry<String, Room> entry : hotelService.showAllRooms().entrySet()) {
-            if (entry.getValue().isAvailable()) {
-                entry.getValue().setAvailable(false);
+        hotelService.showAllRooms().forEach((key, value) -> {
+            if (value.isAvailable()) {
+                value.setAvailable(false);
             }
-        }
+        });
 
         hotelService.showAvailableRooms();
     }
@@ -218,10 +226,11 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns all available rooms of specific type",
             dataProvider = "roomsByTypes")
     public void testShowAvailableRoomsByType(RoomType roomType) throws HotelServiceException {
+        hotelService.showAvailableRooms(roomType).forEach(
+                x -> Assert.assertTrue(x.isAvailable() && x.getRoomType().equals(roomType))
+        );
 
-        for (Room room : hotelService.showAvailableRooms(roomType)) {
-            Assert.assertTrue(room.isAvailable() && room.getRoomType().equals(roomType));
-        }
+
 
     }
 
@@ -230,11 +239,14 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptionsMessageRegExp = "There is no available rooms of type: KING_ROOM")
     @DirtiesContext
     public void testShowAvailableRoomsByType2() throws HotelServiceException {
-        for (Room room : hotelService.showRooms(RoomType.KING_ROOM)) {
-            if (room.isAvailable()) {
-                room.setAvailable(false);
-            }
-        }
+        hotelService.showRooms(RoomType.KING_ROOM).forEach(
+                room -> {
+                    if (room.isAvailable()) {
+                        room.setAvailable(false);
+                    }
+                }
+        );
+
 
         hotelService.showAvailableRooms(RoomType.KING_ROOM);
 
