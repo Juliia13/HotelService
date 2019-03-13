@@ -27,6 +27,7 @@ public class Guest {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,11 +35,11 @@ public class Guest {
 
         Guest guest = (Guest) o;
 
-        return getName().equals(guest.getName());
+        return getName() != null ? getName().equals(guest.getName()) : guest.getName() == null;
     }
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return getName() != null ? getName().hashCode() : 0;
     }
 }

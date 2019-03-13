@@ -7,9 +7,9 @@ import com.jaspersoft.hotelServiceProject.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("hotelServiceImpl")
 public class HotelServiceImpl implements HotelService {
@@ -32,18 +32,19 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Set<Guest> showGuestsWithReservations() throws HotelServiceException {
-        Set<Guest> result = new HashSet<>();
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().getGuest() != null) {
-                result.add(entry.getValue().getGuest());
-            }
-        }
+        Set<Guest> result =
+                hotelRepository.getRooms().entrySet().stream()
+                        .filter(x -> x.getValue().getGuest() != null)
+                        .map(x -> x.getValue().getGuest())
+                        .collect(Collectors.toSet());
+
 
         if (result.isEmpty()) {
             throw new HotelServiceException("There is no reservations in this hotel");
         } else {
             return result;
         }
+
 
     }
 
@@ -60,13 +61,10 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Set<Room> showRooms(RoomType type) throws HotelServiceException {
-        Set<Room> result = new HashSet<>();
-
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().getRoomType().equals(type)) {
-                result.add(entry.getValue());
-            }
-        }
+        Set<Room> result = hotelRepository.getRooms().entrySet().stream()
+                .filter(x -> x.getValue().getRoomType().equals(type))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
 
         if (result.isEmpty()) {
             throw new HotelServiceException("There is no rooms of type " + type + " in hotel");
@@ -79,19 +77,16 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showRooms(Guest quest) throws HotelServiceException {
-        Set<Room> result = new HashSet<>();
+    public Set<Room> showRooms(Guest guest) throws HotelServiceException {
 
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (quest.equals(entry.getValue().getGuest())) {
-                result.add(entry.getValue());
-            }
-
-        }
+        Set<Room> result = hotelRepository.getRooms().entrySet().stream()
+                .filter(x -> guest.equals(x.getValue().getGuest()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
 
 
         if (result.isEmpty()) {
-            throw new HotelServiceException("There is no reservations for quest " + quest.getName());
+            throw new HotelServiceException("There is no reservations for quest " + guest.getName());
         } else {
             return result;
         }
@@ -102,14 +97,11 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Set<Room> showRooms(double fromPrice, double toPrice) throws HotelServiceException {
-        Set<Room> result = new HashSet<>();
 
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().getPrice() >= fromPrice && entry.getValue().getPrice() <= toPrice) {
-                result.add(entry.getValue());
-            }
-
-        }
+        Set<Room> result = hotelRepository.getRooms().entrySet().stream()
+                .filter(x -> x.getValue().getPrice() >= fromPrice && x.getValue().getPrice() <= toPrice)
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
 
 
         if (result.isEmpty()) {
@@ -135,13 +127,10 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Set<Room> showAvailableRooms() throws HotelServiceException {
-        Set<Room> result = new HashSet<>();
-
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().isAvailable()) {
-                result.add(entry.getValue());
-            }
-        }
+        Set<Room> result = hotelRepository.getRooms().entrySet().stream()
+                .filter(x -> x.getValue().isAvailable())
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
 
         if (result.isEmpty()) {
             throw new HotelServiceException("All rooms are reserved!");
@@ -155,12 +144,10 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException {
-        Set<Room> result = new HashSet<>();
-        for (Map.Entry<String, Room> entry : hotelRepository.getRooms().entrySet()) {
-            if (entry.getValue().isAvailable() && entry.getValue().getRoomType().equals(roomType)) {
-                result.add(entry.getValue());
-            }
-        }
+        Set<Room> result = hotelRepository.getRooms().entrySet().stream()
+                .filter(x -> x.getValue().isAvailable() && x.getValue().getRoomType().equals(roomType))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
 
         if (result.isEmpty()) {
             throw new HotelServiceException("There is no available rooms of type: " + roomType);
