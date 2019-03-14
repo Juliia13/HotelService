@@ -78,6 +78,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(hotelService.showAllGuests().size(), 5, "Wrong amount of guests in the hotel");
     }
 
+
     @Test(description = "Verify service returns quests that have reservations")
     public void testShowGuestsWithReservations() throws HotelServiceException {
         Set<Guest> guests = hotelService.showGuestsWithReservations();
@@ -142,9 +143,9 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify message when there is no rooms of specific type",
             expectedExceptions = HotelServiceException.class,
-            expectedExceptionsMessageRegExp = "There is no rooms of type TEST in hotel")
+            expectedExceptionsMessageRegExp = "There is no rooms of type DELUXE_DOUBLE in hotel")
     public void testShowRoomByType2() throws HotelServiceException {
-        hotelService.showRooms(RoomType.TEST);
+        hotelService.showRooms(RoomType.DELUXE_DOUBLE);
     }
 
 
