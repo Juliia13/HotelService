@@ -5,5 +5,5 @@ public enum RoomType {
     QUEEN_ROOM,
     DOUBLE_QUEEN_ROOM,
     DOUBLE_FULL_ROOM,
-    TEST
+    DELUXE_DOUBLE
 }

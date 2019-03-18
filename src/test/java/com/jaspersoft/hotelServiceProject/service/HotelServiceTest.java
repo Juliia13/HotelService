@@ -17,6 +17,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.util.Arrays;
 import java.util.Set;
 
 
@@ -78,21 +79,16 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(hotelService.showAllGuests().size(), 5, "Wrong amount of guests in the hotel");
     }
 
+
     @Test(description = "Verify service returns quests that have reservations")
     public void testShowGuestsWithReservations() throws HotelServiceException {
         Set<Guest> guests = hotelService.showGuestsWithReservations();
-        Assert.assertTrue(!guests.isEmpty(), "There are no guests with reservations");
-
-        hotelService.showAllRooms().forEach(
-                (k, v) -> {
-                    if (!v.isAvailable()) {
-                        guests.remove(v.getGuest());
-                    }
-                }
-        );
-        Assert.assertTrue(guests.isEmpty());
-
-
+        Assert.assertTrue(guests.size() == 4 && guests.containsAll(Arrays.asList(
+                new Guest("Bob Smith", 489.55),
+                new Guest("Marry Johnson", 89.55),
+                new Guest("Tom Brown", 29.55),
+                new Guest("Anna Davis", 59.55)
+        )), "The quests with reservations list has wrong size or contains wrong guests");
     }
 
 
@@ -104,11 +100,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         hotelService.showAllRooms().forEach(
                 (key, value) -> {
                     if (!value.isAvailable()) {
-                        try {
-                            hotelService.cancelReservation(value.getGuest(), value);
-                        } catch (HotelServiceException e) {
-                            e.printStackTrace();
-                        }
+                        value.setGuest(null);
                     }
 
                 }
@@ -146,9 +138,9 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(description = "Verify message when there is no rooms of specific type",
             expectedExceptions = HotelServiceException.class,
-            expectedExceptionsMessageRegExp = "There is no rooms of type TEST in hotel")
+            expectedExceptionsMessageRegExp = "There is no rooms of type DELUXE_DOUBLE in hotel")
     public void testShowRoomByType2() throws HotelServiceException {
-        hotelService.showRooms(RoomType.TEST);
+        hotelService.showRooms(RoomType.DELUXE_DOUBLE);
     }
 
 
@@ -231,7 +223,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         );
 
 
-
     }
 
     @Test(description = "Verify message when there is no available rooms of specific type",
@@ -288,14 +279,14 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             expectedExceptions = HotelServiceException.class,
             expectedExceptionsMessageRegExp = "There is not enough money on your account")
     public void testReserveRoom3() throws HotelServiceException {
-        hotelService.reserveRoom(hotelService.showAllGuests().get("Adam Miller"), hotelService.showRoomByNumber("1C"));
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Adam Miller"), hotelService.showAllRooms().get("1C"));
     }
 
     @Test(description = "Verify validation when specified room is not available for reservation",
             expectedExceptions = HotelServiceException.class,
             expectedExceptionsMessageRegExp = "The room is not available")
     public void testReserveRoom4() throws HotelServiceException {
-        hotelService.reserveRoom(hotelService.showAllGuests().get("Bob Smith"), hotelService.showRoomByNumber("4B"));
+        hotelService.reserveRoom(hotelService.showAllGuests().get("Bob Smith"), hotelService.showAllRooms().get("4B"));
     }
 
     @Test(description = "Verify service can cancel reservation for specific quest")
