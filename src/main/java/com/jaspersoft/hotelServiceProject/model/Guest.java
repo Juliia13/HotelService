@@ -21,12 +21,6 @@ public class Guest {
         this.money = money;
     }
 
-    public Guest(String name, double money) {
-        this.name = name;
-        this.money = money;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
