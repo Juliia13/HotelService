@@ -142,36 +142,50 @@ public class HotelRepositoryConfig {
     @Bean(name = "Bob Smith")
     @Qualifier("moonstone42")
     public Guest getBob() {
-        return new Guest("Bob Smith",
-                489.55);
+        Guest guest = new Guest();
+        guest.setName("Bob Smith");
+        guest.setMoney(489.55);
+        return guest;
     }
 
     @Bean(name = "Marry Johnson")
     @Qualifier("moonstone42")
     public Guest getMarry() {
-        return new Guest("Marry Johnson",
-                89.55);
+        Guest guest = new Guest();
+        guest.setName("Marry Johnson");
+        guest.setMoney(89.55);
+        return guest;
     }
 
     @Bean(name = "Tom Brown")
     @Qualifier("moonstone42")
     public Guest getTom() {
-        return new Guest("Tom Brown",
-                29.55);
+        Guest guest = new Guest();
+        guest.setName("Tom Brown");
+        guest.setMoney(29.55);
+        return guest;
+
+
     }
 
     @Bean(name = "Anna Davis")
     @Qualifier("moonstone42")
     public Guest getAnna() {
-        return new Guest("Anna Davis",
-                59.55);
+        Guest guest = new Guest();
+        guest.setName("Anna Davis");
+        guest.setMoney(59.55);
+        return guest;
+
     }
 
     @Bean(name = "Adam Miller")
     @Qualifier("moonstone42")
     public Guest getAdam() {
-        return new Guest("Adam Miller",
-                5.55);
+        Guest guest = new Guest();
+        guest.setName("Adam Miller");
+        guest.setMoney(5.55);
+        return guest;
+
     }
 
 

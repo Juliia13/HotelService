@@ -9,7 +9,9 @@ public class GuestTest {
 
     @BeforeMethod
     public void beforeEachTest() {
-        guest = new Guest("Tom Jameson", 55.89);
+        guest = new Guest();
+        guest.setName("Tom Jameson");
+        guest.setMoney(55.89);
     }
 
 
@@ -29,14 +31,18 @@ public class GuestTest {
 
     @Test(description = "Verify equals method compares quests by name")
     public void testEquals() {
-        Guest guest1 = new Guest("Tom Jameson", 585.89);
+        Guest guest1 = new Guest();
+        guest1.setName("Tom Jameson");
+        guest1.setMoney(585.89);
         Assert.assertEquals(guest, guest1);
 
     }
 
     @Test(description = "Verify hashcode method takes into account only guest name")
     public void testHashCode() {
-        Guest guest1 = new Guest("Tom Jameson", 755.89);
+        Guest guest1 = new Guest();
+        guest1.setName("Tom Jameson");
+        guest1.setMoney(755.89);
         Assert.assertEquals(guest1.hashCode(), guest.hashCode());
 
     }

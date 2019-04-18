@@ -34,7 +34,9 @@ public class RoomTest {
 
     @Test(description = "Verify getters and setters for room guest")
     public void testSetGetGuest() {
-        Guest guest = new Guest("Bob", 55.5);
+        Guest guest = new Guest();
+        guest.setName("Bob");
+        guest.setMoney(55.5);
         room.setGuest(guest);
         Assert.assertEquals(room.getGuest(), guest);
     }

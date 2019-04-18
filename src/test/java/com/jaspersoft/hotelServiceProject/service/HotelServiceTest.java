@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -83,12 +84,9 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns quests that have reservations")
     public void testShowGuestsWithReservations() throws HotelServiceException {
         Set<Guest> guests = hotelService.showGuestsWithReservations();
-        Assert.assertTrue(guests.size() == 4 && guests.containsAll(Arrays.asList(
-                new Guest("Bob Smith", 489.55),
-                new Guest("Marry Johnson", 89.55),
-                new Guest("Tom Brown", 29.55),
-                new Guest("Anna Davis", 59.55)
-        )), "The quests with reservations list has wrong size or contains wrong guests");
+        Set<String> names = new HashSet<>();
+        guests.forEach(guest -> names.add(guest.getName()));
+        Assert.assertTrue(names.size() == 4 && names.containsAll(Arrays.asList("Bob Smith", "Marry Johnson", "Tom Brown", "Anna Davis")), "The quests with reservations list has wrong size or contains wrong guests");
     }
 
 
