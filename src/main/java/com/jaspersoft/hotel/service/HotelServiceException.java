@@ -1,4 +1,4 @@
-package com.jaspersoft.hotelServiceProject.service;
+package com.jaspersoft.hotel.service;
 
 public class HotelServiceException extends Exception {
     public HotelServiceException(String message) {

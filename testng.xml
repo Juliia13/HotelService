@@ -3,8 +3,8 @@
 <suite name="HotelServiceTestSuite" verbose="1">
     <test name="model">
         <classes>
-            <class name="com.jaspersoft.hotelServiceProject.model.GuestTest"/>
-            <class name="com.jaspersoft.hotelServiceProject.model.RoomTest"/>
+            <class name="com.jaspersoft.hotel.model.GuestTest"/>
+            <class name="com.jaspersoft.hotel.model.RoomTest"/>
         </classes>
 
 
@@ -12,7 +12,7 @@
 
     <test name="repository">
         <classes>
-            <class name="com.jaspersoft.hotelServiceProject.repository.HotelRepositoryTest"/>
+            <class name="com.jaspersoft.hotel.repository.HotelRepositoryTest"/>
 
         </classes>
 
@@ -20,7 +20,7 @@
 
     <test name="service">
         <classes>
-            <class name="com.jaspersoft.hotelServiceProject.service.HotelServiceTest"/>
+            <class name="com.jaspersoft.hotel.service.HotelServiceTest"/>
 
         </classes>
 

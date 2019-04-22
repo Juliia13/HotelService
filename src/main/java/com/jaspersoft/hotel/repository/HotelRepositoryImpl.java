@@ -1,7 +1,7 @@
-package com.jaspersoft.hotelServiceProject.repository;
+package com.jaspersoft.hotel.repository;
 
-import com.jaspersoft.hotelServiceProject.model.Guest;
-import com.jaspersoft.hotelServiceProject.model.Room;
+import com.jaspersoft.hotel.model.Guest;
+import com.jaspersoft.hotel.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;

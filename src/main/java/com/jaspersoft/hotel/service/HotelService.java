@@ -1,8 +1,8 @@
-package com.jaspersoft.hotelServiceProject.service;
+package com.jaspersoft.hotel.service;
 
-import com.jaspersoft.hotelServiceProject.model.Guest;
-import com.jaspersoft.hotelServiceProject.model.Room;
-import com.jaspersoft.hotelServiceProject.model.RoomType;
+import com.jaspersoft.hotel.model.Guest;
+import com.jaspersoft.hotel.model.Room;
+import com.jaspersoft.hotel.model.RoomType;
 
 import java.util.Map;
 import java.util.Set;
