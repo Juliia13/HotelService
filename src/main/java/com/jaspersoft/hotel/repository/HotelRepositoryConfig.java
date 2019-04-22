@@ -30,102 +30,139 @@ public class HotelRepositoryConfig {
     @Bean(name = "1A")
     @Qualifier("moonstone42")
     public Room getRoom1() {
-        return new Room("1A",
-                RoomType.KING_ROOM,
-
-                null,
-                KING_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("1A");
+        room.setRoomType(RoomType.KING_ROOM);
+        room.setGuest(null);
+        room.setPrice(KING_ROOM_PRICE);
+        return room;
     }
 
     @Bean(name = "1B")
     @Qualifier("moonstone42")
     public Room getRoom2() {
-        return new Room("1B",
-                RoomType.KING_ROOM,
-                getAnna(),
-                KING_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("1B");
+        room.setRoomType(RoomType.KING_ROOM);
+        room.setGuest(getAnna());
+        room.setPrice(KING_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "1C")
     @Qualifier("moonstone42")
     public Room getRoom3() {
-        return new Room("1C",
-                RoomType.KING_ROOM,
-                null,
-                KING_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("1C");
+        room.setRoomType(RoomType.KING_ROOM);
+        room.setGuest(null);
+        room.setPrice(KING_ROOM_PRICE);
+        return room;
+
+
     }
 
 
     @Bean(name = "2A")
     @Qualifier("moonstone42")
     public Room getRoom4() {
-        return new Room("2A",
-                RoomType.DOUBLE_FULL_ROOM,
-                null,
-                DOUBLE_FULL_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("2A");
+        room.setRoomType(RoomType.DOUBLE_FULL_ROOM);
+        room.setGuest(null);
+        room.setPrice(DOUBLE_FULL_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "2B")
     @Qualifier("moonstone42")
     public Room getRoom5() {
-        return new Room("2B",
-                RoomType.DOUBLE_FULL_ROOM,
-                null,
-                DOUBLE_FULL_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("2B");
+        room.setRoomType(RoomType.DOUBLE_FULL_ROOM);
+        room.setGuest(null);
+        room.setPrice(DOUBLE_FULL_ROOM_PRICE);
+        return room;
+
     }
 
     @Bean(name = "3A")
     @Qualifier("moonstone42")
     public Room getRoom6() {
-        return new Room("3A",
-                RoomType.QUEEN_ROOM,
-                getBob(),
-                QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("3A");
+        room.setRoomType(RoomType.QUEEN_ROOM);
+        room.setGuest(getBob());
+        room.setPrice(QUEEN_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "3B")
     @Qualifier("moonstone42")
     public Room getRoom7() {
-        return new Room("3B",
-                RoomType.QUEEN_ROOM,
-                null,
-                QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("3B");
+        room.setRoomType(RoomType.QUEEN_ROOM);
+        room.setGuest(null);
+        room.setPrice(QUEEN_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "4A")
     @Qualifier("moonstone42")
     public Room getRoom8() {
-        return new Room("4A",
-                RoomType.DOUBLE_QUEEN_ROOM,
-                getMarry(),
-                DOUBLE_QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("4A");
+        room.setRoomType(RoomType.DOUBLE_QUEEN_ROOM);
+        room.setGuest(getMarry());
+        room.setPrice(DOUBLE_QUEEN_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "4B")
     @Qualifier("moonstone42")
     public Room getRoom9() {
-        return new Room("4B",
-                RoomType.DOUBLE_QUEEN_ROOM,
-                getTom(),
-                DOUBLE_QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("4B");
+        room.setRoomType(RoomType.DOUBLE_QUEEN_ROOM);
+        room.setGuest(getTom());
+        room.setPrice(DOUBLE_QUEEN_ROOM_PRICE);
+        return room;
+
+
     }
 
     @Bean(name = "4C")
     @Qualifier("moonstone42")
     public Room getRoom10() {
-        return new Room("4C",
-                RoomType.DOUBLE_QUEEN_ROOM,
-                getTom(),
-                DOUBLE_QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("4C");
+        room.setRoomType(RoomType.DOUBLE_QUEEN_ROOM);
+        room.setGuest(getTom());
+        room.setPrice(DOUBLE_QUEEN_ROOM_PRICE);
+        return room;
+
     }
 
     @Bean(name = "5A")
     @Qualifier("moonstone42")
     public Room getRoom11() {
-        return new Room("5A",
-                RoomType.DOUBLE_QUEEN_ROOM,
-                null,
-                DOUBLE_QUEEN_ROOM_PRICE);
+        Room room = new Room();
+        room.setRoomNumber("5A");
+        room.setRoomType(RoomType.DOUBLE_QUEEN_ROOM);
+        room.setGuest(null);
+        room.setPrice(DOUBLE_QUEEN_ROOM_PRICE);
+        return room;
     }
 
 

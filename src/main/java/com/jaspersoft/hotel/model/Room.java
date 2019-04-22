@@ -4,21 +4,12 @@ public class Room {
 
     private String roomNumber;
     private RoomType roomType;
-
     private Guest guest;
     private double price;
-
-    public Room(String roomNumber, RoomType roomType, Guest guest, double price) {
-        this.roomNumber = roomNumber;
-        this.roomType = roomType;
-        this.guest = guest;
-        this.price = price;
-    }
 
     public String getRoomNumber() {
         return roomNumber;
     }
-
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
@@ -26,17 +17,13 @@ public class Room {
     public RoomType getRoomType() {
         return roomType;
     }
-
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
 
-
-
     public Guest getGuest() {
         return guest;
     }
-
     public void setGuest(Guest guest) {
         this.guest = guest;
     }
@@ -44,7 +31,6 @@ public class Room {
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
