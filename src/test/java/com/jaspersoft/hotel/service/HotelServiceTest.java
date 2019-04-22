@@ -97,7 +97,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     public void testShowGuestsWithReservations2() throws HotelServiceException {
         hotelService.showAllRooms().forEach(
                 (key, value) -> {
-                    if (!value.isAvailable()) {
+                    if (value.getGuest() != null) {
                         value.setGuest(null);
                     }
 
@@ -194,7 +194,8 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @Test(description = "Verify service returns all available rooms")
     public void testShowAvailableRooms() throws HotelServiceException {
         hotelService.showAvailableRooms().forEach(
-                x -> Assert.assertTrue(x.isAvailable())
+                x -> Assert.assertNull(x.getGuest())
+
         );
 
     }
@@ -205,8 +206,8 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     @DirtiesContext
     public void testShowAvailableRooms2() throws HotelServiceException {
         hotelService.showAllRooms().forEach((key, value) -> {
-            if (value.isAvailable()) {
-                value.setAvailable(false);
+            if (value.getGuest() == null) {
+                value.setGuest(new Guest());
             }
         });
 
@@ -217,7 +218,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
             dataProvider = "roomsByTypes")
     public void testShowAvailableRoomsByType(RoomType roomType) throws HotelServiceException {
         hotelService.showAvailableRooms(roomType).forEach(
-                x -> Assert.assertTrue(x.isAvailable() && x.getRoomType().equals(roomType))
+                x -> Assert.assertTrue(x.getGuest() == null && x.getRoomType().equals(roomType))
         );
 
 
@@ -230,8 +231,8 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     public void testShowAvailableRoomsByType2() throws HotelServiceException {
         hotelService.showRooms(RoomType.KING_ROOM).forEach(
                 room -> {
-                    if (room.isAvailable()) {
-                        room.setAvailable(false);
+                    if (room.getGuest() == null) {
+                        room.setGuest(new Guest());
                     }
                 }
         );
@@ -251,7 +252,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(hotelService.reserveRoom(guest, room), "Reservation method didn't return true");
         softAssert.assertEquals(guest.getMoney(), money - room.getPrice(), "Wrong amount of money on users's account");
-        softAssert.assertFalse(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertNotNull(room.getGuest(), "Wrong rooms status");
         softAssert.assertEquals(room.getGuest(), guest, "Guest is not set to room");
         softAssert.assertAll();
     }
@@ -267,7 +268,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(hotelService.reserveRoom(guest, room), "Reservation method didn't return true");
         softAssert.assertEquals(guest.getMoney(), 0.0, "Wrong amount of money on users's account");
-        softAssert.assertFalse(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertNotNull(room.getGuest(), "Wrong rooms status");
         softAssert.assertEquals(room.getGuest(), guest, "Guest is not set to room");
         softAssert.assertAll();
     }
@@ -297,7 +298,7 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
         softAssert.assertTrue(hotelService.cancelReservation(guest, room), "Cancel reservation method didn't return true");
         softAssert.assertEquals(guest.getMoney(), money + DOUBLE_QUEEN_ROOM_PRICE, "Wrong amount of money on users's account");
-        softAssert.assertTrue(room.isAvailable(), "Wrong rooms status");
+        softAssert.assertNull(room.getGuest(), "Wrong rooms status");
         softAssert.assertNull(room.getGuest(), "Room still has link to user after cancelling reservation");
 
         softAssert.assertAll();

@@ -9,7 +9,7 @@ public class RoomTest {
 
     @BeforeMethod
     public void beforeEachTest() {
-        room = new Room("1D", RoomType.KING_ROOM, true, null, 45.88);
+        room = new Room("1D", RoomType.KING_ROOM, null, 45.88);
     }
 
     @Test(description = "Verify getters and setters for roomNumber")
@@ -25,11 +25,7 @@ public class RoomTest {
     }
 
 
-    @Test(description = "Verify getters and setters for availability")
-    public void testGetSetAvailability() {
-        room.setAvailable(false);
-        Assert.assertFalse(room.isAvailable());
-    }
+
 
 
     @Test(description = "Verify getters and setters for room guest")
@@ -50,13 +46,13 @@ public class RoomTest {
 
     @Test(description = "Verify equals method compares rooms by number")
     public void testEquals() {
-        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
+        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, null, 458.78);
         Assert.assertEquals(room, room1);
     }
 
     @Test(description = "Verify hashcode method takes into account only room number")
     public void testHashCode() {
-        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, true, null, 458.78);
+        Room room1 = new Room("1D", RoomType.DOUBLE_QUEEN_ROOM, null, 458.78);
         Assert.assertEquals(room.hashCode(), room1.hashCode());
     }
 }

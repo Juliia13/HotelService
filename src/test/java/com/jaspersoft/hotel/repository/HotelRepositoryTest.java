@@ -51,28 +51,7 @@ public class HotelRepositoryTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(description = "Verify when room is not available, it has a guest")
-    public void testNotAvailableRooms() {
-        hotelRepository.getRooms().forEach(
-                (key, value) -> {
-                    if (!value.isAvailable()) {
-                        Assert.assertNotNull(value.getGuest());
-                    }
 
-                }
-        );
-    }
-
-    @Test(description = "Verify when room is available, it doesn't contain a guest reference")
-    public void testAvailableRooms() {
-        hotelRepository.getRooms().forEach(
-                (key, value) -> {
-                    if (value.isAvailable()) {
-                        Assert.assertNull(value.getGuest());
-                    }
-                }
-        );
-    }
 
 
     @Test(description = "Verify each guest has a name")

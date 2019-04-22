@@ -4,14 +4,13 @@ public class Room {
 
     private String roomNumber;
     private RoomType roomType;
-    private boolean available;
+
     private Guest guest;
     private double price;
 
-    public Room(String roomNumber, RoomType roomType, boolean available, Guest guest, double price) {
+    public Room(String roomNumber, RoomType roomType, Guest guest, double price) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
-        this.available = available;
         this.guest = guest;
         this.price = price;
     }
@@ -32,13 +31,7 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
 
     public Guest getGuest() {
         return guest;

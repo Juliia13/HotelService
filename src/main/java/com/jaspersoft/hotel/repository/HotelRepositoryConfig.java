@@ -32,7 +32,7 @@ public class HotelRepositoryConfig {
     public Room getRoom1() {
         return new Room("1A",
                 RoomType.KING_ROOM,
-                true,
+
                 null,
                 KING_ROOM_PRICE);
     }
@@ -42,7 +42,6 @@ public class HotelRepositoryConfig {
     public Room getRoom2() {
         return new Room("1B",
                 RoomType.KING_ROOM,
-                false,
                 getAnna(),
                 KING_ROOM_PRICE);
     }
@@ -52,7 +51,6 @@ public class HotelRepositoryConfig {
     public Room getRoom3() {
         return new Room("1C",
                 RoomType.KING_ROOM,
-                true,
                 null,
                 KING_ROOM_PRICE);
     }
@@ -63,7 +61,6 @@ public class HotelRepositoryConfig {
     public Room getRoom4() {
         return new Room("2A",
                 RoomType.DOUBLE_FULL_ROOM,
-                true,
                 null,
                 DOUBLE_FULL_ROOM_PRICE);
     }
@@ -73,7 +70,6 @@ public class HotelRepositoryConfig {
     public Room getRoom5() {
         return new Room("2B",
                 RoomType.DOUBLE_FULL_ROOM,
-                true,
                 null,
                 DOUBLE_FULL_ROOM_PRICE);
     }
@@ -83,7 +79,6 @@ public class HotelRepositoryConfig {
     public Room getRoom6() {
         return new Room("3A",
                 RoomType.QUEEN_ROOM,
-                false,
                 getBob(),
                 QUEEN_ROOM_PRICE);
     }
@@ -93,7 +88,6 @@ public class HotelRepositoryConfig {
     public Room getRoom7() {
         return new Room("3B",
                 RoomType.QUEEN_ROOM,
-                true,
                 null,
                 QUEEN_ROOM_PRICE);
     }
@@ -103,7 +97,6 @@ public class HotelRepositoryConfig {
     public Room getRoom8() {
         return new Room("4A",
                 RoomType.DOUBLE_QUEEN_ROOM,
-                false,
                 getMarry(),
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
@@ -113,7 +106,6 @@ public class HotelRepositoryConfig {
     public Room getRoom9() {
         return new Room("4B",
                 RoomType.DOUBLE_QUEEN_ROOM,
-                false,
                 getTom(),
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
@@ -123,7 +115,6 @@ public class HotelRepositoryConfig {
     public Room getRoom10() {
         return new Room("4C",
                 RoomType.DOUBLE_QUEEN_ROOM,
-                false,
                 getTom(),
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
@@ -133,7 +124,6 @@ public class HotelRepositoryConfig {
     public Room getRoom11() {
         return new Room("5A",
                 RoomType.DOUBLE_QUEEN_ROOM,
-                true,
                 null,
                 DOUBLE_QUEEN_ROOM_PRICE);
     }
@@ -187,10 +177,6 @@ public class HotelRepositoryConfig {
         return guest;
 
     }
-
-
-
-
 
 
 }

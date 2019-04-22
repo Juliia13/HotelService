@@ -128,7 +128,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Set<Room> showAvailableRooms() throws HotelServiceException {
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
-                .filter(x -> x.getValue().isAvailable())
+                .filter(x -> x.getValue().getGuest() == null)
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toSet());
 
@@ -145,7 +145,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException {
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
-                .filter(x -> x.getValue().isAvailable() && x.getValue().getRoomType().equals(roomType))
+                .filter(x -> x.getValue().getGuest() == null && x.getValue().getRoomType().equals(roomType))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toSet());
 
@@ -159,9 +159,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public boolean reserveRoom(Guest guest, Room room) throws HotelServiceException {
-        if (room.isAvailable()) {
+        if (room.getGuest() == null) {
             if (guest.getMoney() >= room.getPrice()) {
-                room.setAvailable(false);
+
                 room.setGuest(guest);
                 guest.setMoney(guest.getMoney() - room.getPrice());
                 return true;
@@ -179,9 +179,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public boolean cancelReservation(Guest guest, Room room) throws HotelServiceException {
-        if (!room.isAvailable()) {
+        if (room.getGuest() != null) {
             if (room.getGuest().equals(guest)) {
-                room.setAvailable(true);
+
                 room.setGuest(null);
                 guest.setMoney(guest.getMoney() + room.getPrice());
                 return true;
