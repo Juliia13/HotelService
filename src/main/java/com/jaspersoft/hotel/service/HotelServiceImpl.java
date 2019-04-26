@@ -19,19 +19,19 @@ public class HotelServiceImpl implements HotelService {
     private HotelRepository hotelRepository;
 
     @Override
-    public Map<String, Room> showAllRooms() {
+    public Map<String, Room> getAllRooms() {
         return hotelRepository.getRooms();
     }
 
 
     @Override
-    public Map<String, Guest> showAllGuests() {
+    public Map<String, Guest> getAllGuests() {
         return hotelRepository.getGuests();
 
     }
 
     @Override
-    public Set<Guest> showGuestsWithReservations() throws HotelServiceException {
+    public Set<Guest> getGuestsWithReservations() throws HotelServiceException {
         Set<Guest> result =
                 hotelRepository.getRooms().entrySet().stream()
                         .filter(x -> x.getValue().getGuest() != null)
@@ -50,7 +50,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Room showRoomByNumber(String roomNumber) throws HotelServiceException {
+    public Room getRoomByNumber(String roomNumber) throws HotelServiceException {
         if (hotelRepository.getRooms().containsKey(roomNumber)) {
             return hotelRepository.getRooms().get(roomNumber);
         } else {
@@ -60,7 +60,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showRooms(RoomType type) throws HotelServiceException {
+    public Set<Room> getRooms(RoomType type) throws HotelServiceException {
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
                 .filter(x -> x.getValue().getRoomType().equals(type))
                 .map(Map.Entry::getValue)
@@ -77,7 +77,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showRooms(Guest guest) throws HotelServiceException {
+    public Set<Room> getRooms(Guest guest) throws HotelServiceException {
 
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
                 .filter(x -> guest.equals(x.getValue().getGuest()))
@@ -96,7 +96,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showRooms(double fromPrice, double toPrice) throws HotelServiceException {
+    public Set<Room> getRooms(double fromPrice, double toPrice) throws HotelServiceException {
 
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
                 .filter(x -> x.getValue().getPrice() >= fromPrice && x.getValue().getPrice() <= toPrice)
@@ -115,7 +115,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Guest showGuest(String name) throws HotelServiceException {
+    public Guest getGuest(String name) throws HotelServiceException {
         if (hotelRepository.getGuests().containsKey(name)) {
             return hotelRepository.getGuests().get(name);
         } else {
@@ -126,7 +126,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showAvailableRooms() throws HotelServiceException {
+    public Set<Room> getAvailableRooms() throws HotelServiceException {
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
                 .filter(x -> x.getValue().getGuest() == null)
                 .map(Map.Entry::getValue)
@@ -143,7 +143,7 @@ public class HotelServiceImpl implements HotelService {
 
 
     @Override
-    public Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException {
+    public Set<Room> getAvailableRooms(RoomType roomType) throws HotelServiceException {
         Set<Room> result = hotelRepository.getRooms().entrySet().stream()
                 .filter(x -> x.getValue().getGuest() == null && x.getValue().getRoomType().equals(roomType))
                 .map(Map.Entry::getValue)

@@ -10,25 +10,25 @@ import java.util.Set;
 public interface HotelService {
 
 
-    Map<String, Room> showAllRooms();
+    Map<String, Room> getAllRooms();
 
-    Map<String, Guest> showAllGuests();
+    Map<String, Guest> getAllGuests();
 
-    Set<Guest> showGuestsWithReservations() throws HotelServiceException;
+    Set<Guest> getGuestsWithReservations() throws HotelServiceException;
 
-    Room showRoomByNumber(String roomNumber) throws HotelServiceException;
+    Room getRoomByNumber(String roomNumber) throws HotelServiceException;
 
-    Set<Room> showRooms(RoomType type) throws HotelServiceException;
+    Set<Room> getRooms(RoomType type) throws HotelServiceException;
 
-    Set<Room> showRooms(Guest quest) throws HotelServiceException;
+    Set<Room> getRooms(Guest quest) throws HotelServiceException;
 
-    Set<Room> showRooms(double fromPrice, double toPrice) throws HotelServiceException;
+    Set<Room> getRooms(double fromPrice, double toPrice) throws HotelServiceException;
 
-    Guest showGuest(String name) throws HotelServiceException;
+    Guest getGuest(String name) throws HotelServiceException;
 
-    Set<Room> showAvailableRooms() throws HotelServiceException;
+    Set<Room> getAvailableRooms() throws HotelServiceException;
 
-    Set<Room> showAvailableRooms(RoomType roomType) throws HotelServiceException;
+    Set<Room> getAvailableRooms(RoomType roomType) throws HotelServiceException;
 
 
     boolean reserveRoom(Guest guest, Room room) throws HotelServiceException;
