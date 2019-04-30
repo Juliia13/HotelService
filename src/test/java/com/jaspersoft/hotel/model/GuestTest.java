@@ -38,6 +38,15 @@ public class GuestTest {
 
     }
 
+    @Test(description = "Verify guests with different names are not equal")
+    public void testNotEquals() {
+        Guest guest1 = new Guest();
+        guest1.setName("Tom James");
+        guest1.setMoney(55.89);
+        Assert.assertNotEquals(guest, guest1);
+
+    }
+
     @Test(description = "Verify hashcode method takes into account only guest name")
     public void testHashCode() {
         Guest guest1 = new Guest();

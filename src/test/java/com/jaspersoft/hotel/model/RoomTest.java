@@ -58,6 +58,16 @@ public class RoomTest {
         Assert.assertEquals(room, room1);
     }
 
+    @Test(description = "Verify rooms with different numbers are not equal")
+    public void testNotEquals() {
+        Room room1 = new Room();
+        room1.setRoomNumber("1A");
+        room1.setRoomType(RoomType.KING_ROOM);
+        room1.setGuest(null);
+        room1.setPrice(45.88);
+        Assert.assertNotEquals(room, room1);
+    }
+
     @Test(description = "Verify hashcode method takes into account only room number")
     public void testHashCode() {
         Room room1 = new Room();
