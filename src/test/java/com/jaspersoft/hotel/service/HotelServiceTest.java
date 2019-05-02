@@ -11,8 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.SkipException;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -64,12 +62,6 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    @BeforeClass
-    public void beforeClassMethod() {
-        if (hotelService == null) {
-            throw new SkipException("The hotelService is null");
-        }
-    }
 
 
     @Test(description = "Verify service returns all rooms in the hotel")
