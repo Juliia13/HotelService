@@ -17,8 +17,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -71,13 +73,19 @@ public class HotelServiceTest extends AbstractTestNGSpringContextTests {
 
 
     @Test(description = "Verify service returns all rooms in the hotel")
-    public void testShowAllRooms() {
-        Assert.assertEquals(hotelService.getAllRooms().size(), 11, "Wrong amount of rooms in the hotel");
+    public void testGetAllRooms() {
+        List<String> roomNumbers = new ArrayList<>();
+        hotelService.getAllRooms().forEach((key, value) -> roomNumbers.add(value.getRoomNumber()));
+
+        Assert.assertEquals(roomNumbers, Arrays.asList("1A", "1B", "1C", "2A", "2B", "3A", "3B", "4A", "4B", "4C", "5A"));
     }
 
-    @Test(description = "Verify service returns all hotel quests")
-    public void testShowGuests() {
-        Assert.assertEquals(hotelService.getAllGuests().size(), 5, "Wrong amount of guests in the hotel");
+    @Test(description = "Verify service returns all quests in the hotel")
+    public void testGetAllGuests() {
+        List<String> names = new ArrayList<>();
+        hotelService.getAllGuests().forEach((key, value) -> names.add(value.getName()));
+
+        Assert.assertEquals(names, Arrays.asList("Bob Smith", "Marry Johnson", "Tom Brown", "Anna Davis", "Adam Miller"));
     }
 
 

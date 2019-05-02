@@ -25,15 +25,14 @@ public class HotelRepositoryTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(description = "Verify repository returns all guests")
+    @Test(description = "Verify repository contains guests")
     public void testGetGuests() {
-        Assert.assertEquals(hotelRepository.getGuests().size(), 5);
-
+        Assert.assertFalse(hotelRepository.getGuests().isEmpty(), "Repository doesn't contain any guests");
     }
 
-    @Test(description = "Verify repository returns all rooms")
+    @Test(description = "Verify repository contains rooms")
     public void testGetRooms() {
-        Assert.assertEquals(hotelRepository.getRooms().size(), 11);
+        Assert.assertFalse(hotelRepository.getRooms().isEmpty(), "Repository doesn't contain any rooms");
     }
 
     @Test(description = "Verify each room has a number")
@@ -49,9 +48,6 @@ public class HotelRepositoryTest extends AbstractTestNGSpringContextTests {
                 (key, value) -> Assert.assertNotNull(value.getRoomType())
         );
     }
-
-
-
 
 
     @Test(description = "Verify each guest has a name")
