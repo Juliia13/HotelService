@@ -1,4 +1,4 @@
-package com.jaspersoft.hotel.model;
+package com.mycompany.hotel.model;
 
 public enum RoomType {
     KING_ROOM,

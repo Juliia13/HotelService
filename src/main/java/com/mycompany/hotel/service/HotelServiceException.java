@@ -1,4 +1,4 @@
-package com.jaspersoft.hotel.service;
+package com.mycompany.hotel.service;
 
 class HotelServiceException extends Exception {
 

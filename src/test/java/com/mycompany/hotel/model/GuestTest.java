@@ -1,4 +1,4 @@
-package com.jaspersoft.hotel.model;
+package com.mycompany.hotel.model;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

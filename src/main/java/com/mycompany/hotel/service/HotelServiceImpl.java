@@ -1,9 +1,9 @@
-package com.jaspersoft.hotel.service;
+package com.mycompany.hotel.service;
 
-import com.jaspersoft.hotel.model.Guest;
-import com.jaspersoft.hotel.model.Room;
-import com.jaspersoft.hotel.model.RoomType;
-import com.jaspersoft.hotel.repository.HotelRepository;
+import com.mycompany.hotel.model.Guest;
+import com.mycompany.hotel.model.Room;
+import com.mycompany.hotel.model.RoomType;
+import com.mycompany.hotel.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

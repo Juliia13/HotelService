@@ -1,6 +1,6 @@
-package com.jaspersoft.hotel.repository;
+package com.mycompany.hotel.repository;
 
-import com.jaspersoft.hotel.AppConfig;
+import com.mycompany.hotel.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
